@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-//scoped是vue指令控制组件样式生效区间----加上就在当前组件生效, 去掉则全局生效
+// scoped是vue指令控制组件样式生效区间----加上就在当前组件生效, 去掉则全局生效
 <style scoped>
 .login_container{
     background-color: #2b4b6b;
