@@ -82,11 +82,56 @@
       <!-- 右侧主体 -->
       <el-main>
         <div>
-          <div style="display:flex;justify-content:center;padding-top:1%;">
+          <!-- 第一块广告大横幅区域 -->
+          <div style="display: flex; justify-content: center; padding-top: 1%">
             <el-image
               class="main-img"
               :src="require('../assets/HomeImg/DMICROpic2.png')"
             ></el-image>
+          </div>
+          <!-- 第二块热点区域 -->
+          <div class="title-div">
+            <div
+              style="
+                width: 25%;
+                margin-left: px;
+                display: flex;
+                justify-content: center;
+              "
+            >
+              <el-image
+                class="small-img"
+                :src="require('../assets/HomeImg/DSmallPic.png')"
+              ></el-image>
+            </div>
+            <div style="width: 30%; margin-left: 4%">
+              <span style="font-size: 20px; font-weight: bolder">热点资讯</span>
+              <div>
+                <div class="hot-art-div">
+                  <a href="" >文章1</a>
+                </div>
+                <div class="hot-art-div">
+                  <a href=""  >文章1</a>
+                </div>
+              </div>
+            </div>
+            <div style="width: 30%; margin-left: 4%">
+              <span style="font-size: 20px; font-weight: bolder">热点文章</span>
+              <div>
+                <div class="hot-art-div">
+                  <a href="" >文章2</a>
+                </div>
+                <div class="hot-art-div">
+                  <a href=""  >文章2</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 第三块文章部分 (detail)-->
+          <div class="title-div">
+            <div>
+              aaa
+            </div>
           </div>
         </div>
       </el-main>
@@ -169,8 +214,52 @@ export default {
   padding-left: 20%;
 }
 
-.main-img{
-  width:90%;
+.main-img {
+  width: 90%;
   height: 200px;
+}
+
+.el-row {
+  margin-bottom: 20px;
+}
+
+.el-row:last-child {
+  margin-bottom: 0;
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #fff;
+}
+.bg-purple {
+  background: #fff;
+}
+.bg-purple-light {
+  background: #fff;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
+
+.small-img {
+  width: 80%;
+}
+
+.hot-art-div{
+  padding-top: 20px;border-bottom: 1px solid #dbdbdb;padding-bottom: 10px;
+}
+
+a{
+  text-decoration: none; text-decoration: none;padding-left: 10px;
+}
+
+.title-div{
+  display: flex; padding-top: 3%; margin-left: 8%;
 }
 </style>
