@@ -17,7 +17,6 @@
                 <el-autocomplete style="font-size:15px;" :trigger-on-focus="false" :fetch-suggestions="getSuggest" v-model="queryString" @select="queryString" placeholder="请输入内容">
                 </el-autocomplete>
                 <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
-                <!-- <el-autocomplete class="inline-input" v-model="state2" :fetch-suggestions="querySearch" placeholder="请输入内容" :trigger-on-focus="false" @select="handleSelect"></el-autocomplete> -->
             </div>
         </div>
         <div class="header-right-div">
@@ -90,10 +89,10 @@
                         <span style="font-size: 20px; font-weight: bolder">热点资讯</span>
                         <div>
                             <div class="hot-art-div">
-                                <a href="" style="color: black">文章1</a>
+                                <a href="" style="color: black">凯世通已经具备了正式量产的技术</a>
                             </div>
                             <div class="hot-art-div">
-                                <a href="" style="color: black">文章1</a>
+                                <a href="" style="color: black">Arm 的 CEO 西蒙已经辞职</a>
                             </div>
                         </div>
                     </div>
@@ -101,10 +100,10 @@
                         <span style="font-size: 20px; font-weight: bolder">热点文章</span>
                         <div>
                             <div class="hot-art-div">
-                                <a href="" style="color: black">文章2</a>
+                                <a href="" style="color: black">镁光12英寸再生晶圆出货量突破10万片</a>
                             </div>
                             <div class="hot-art-div">
-                                <a href="" style="color: black">文章2</a>
+                                <a href="" style="color: black">谷歌发布Android 12L最后一个Beta更新</a>
                             </div>
                         </div>
                     </div>
@@ -119,14 +118,49 @@
                             <el-menu-item index="4">数码科技</el-menu-item>
                         </el-menu>
                     </div>
-                    <div>
-                        <div style="margin-left: 5px; margin-top: 5px">
-                            <span>删除遭GITHUB封号,开发者欲夺回开发行权</span>
+                    <div class="bottom-detail-div">
+                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                            <span>美国密歇根州霍兰德正在加强研发能力并发芯片</span>
+                        </a>
+                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
+                            <div class="left-div">
+                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                            </div>
+                            <div class="right-div">
+                                <div class="title-bottom-div">
+                                    <a href="">
+                                        <span>明年中国取消电动汽车补贴，LG 新能源将能够重新进军中国电动车市场，进而逐步缩小与宁德时代的差距。</span>
+                                    </a>
+                                </div>
+                                <div class="like-div">
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                </div>
+                            </div>
                         </div>
-                        <div style="margin-left: 1px; margin-top: 5px; display: flex">
-                            <el-image class="small-img" style="width: 10%" :src="require('../assets/HomeImg/DSmallPic.png')"></el-image>
-                            <p>删库一时爽,后悔没商量</p>
-                            <span>作者</span>
+                    </div>
+                    <!-- 循环第二个不可 -->
+                    <div class="bottom-detail-div">
+                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
+                        </a>
+                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
+                            <div class="left-div">
+                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                            </div>
+                            <div class="right-div">
+                                <div class="title-bottom-div">
+                                    <a href="">
+                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
+                                    </a>
+                                </div>
+                                <div class="like-div">
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,7 +181,7 @@ export default {
             activeIndex2: "1",
             queryString: "",
             page: 1,
-            pageSize: 4,
+            pageSize: 10,
             suggestions: []
         };
     },
@@ -179,20 +213,25 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+            window.sessionStorage.setItem("token", "123456789");
+            this.$router.push("/search-info");
         },
         // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
         getSuggest(queryString, callback) {
-            // zheliyouwent
             var list = [];
             //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" +  queryString;
+            let url = this.url + "suggest?suggestKey=" + queryString;
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
                 console.log(res)
-                for (let i = 0;i<res.data.length;i++) {
-                    console.log({"value":res.data[i]})
-                    list.push({"value":res.data[i]});
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log({
+                        "value": res.data[i]
+                    })
+                    list.push({
+                        "value": res.data[i]
+                    });
 
                 }
                 console.log(list)
@@ -345,6 +384,7 @@ a {
     text-decoration: none;
     text-decoration: none;
     padding-left: 10px;
+    color: gray;
 }
 
 .title-div {
@@ -354,5 +394,39 @@ a {
     width: 90%;
 }
 
-.el-select-low {}
+.left-div {
+    margin-left: 2%;
+    width: 16%;
+    float: left;
+}
+
+.top-div {
+    padding-bottom: 2%;
+
+}
+
+.bottom-detail-div {
+    margin-top: 1%;
+    background-color: #ffffff;
+    height: 10%;
+}
+
+.bottom-detail-div:hover {
+    background-color: #ccc;
+}
+
+.right-div {
+    width: 70%;
+    overflow: auto;
+    display: column;
+}
+
+.like-div {
+    padding-left: 2%;
+
+}
+
+.title-bottom-div {
+    height: 56%;
+}
 </style>
