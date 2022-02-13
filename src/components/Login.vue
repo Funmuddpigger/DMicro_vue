@@ -50,23 +50,23 @@ export default {
     },
     methods: {
          login(){
-// //            this.$refs.loginFormRef.validate(async valid => {
-// //                if(!valid) return;
-// //                //const { data : res } = await this.$http.post("login",this.loginForm);
-// //                //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
-// //                const result = await this.$http.post("login",this.loginForm);
-// //                console.log(result)
-// //                //判断登录状态码
-// //                if(res.meta.status != 200 ) return this.$message.console.error("logn fail");
-// //                else this.$message.success("login success");
-// //                //1. 将登录成功之后的token保存到客户端的sessionStorage中
-// //                //  1.1 项目中除了登陆之外的其他接口都必须在登录之后才能访问
-// //                //  1.2 token只应在当前网站打开期间生效,所以要保存在sessionStorage
-// //                window.sessionStorage.setItem("token",res.data.token);
-// //                //2. 通过导航跳转到主页,路由地址是/home  
-// //                this.$router.push("/home");
-// //            }
-// // );   
+//            this.$refs.loginFormRef.validate(async valid => {
+//                if(!valid) return;
+//                //const { data : res } = await this.$http.post("login",this.loginForm);
+//                //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
+//                const result = await this.$http.post("login",this.loginForm);
+//                console.log(result)
+//                //判断登录状态码
+//                if(res.meta.status != 200 ) return this.$message.console.error("logn fail");
+//                else this.$message.success("login success");
+//                //1. 将登录成功之后的token保存到客户端的sessionStorage中
+//                //  1.1 项目中除了登陆之外的其他接口都必须在登录之后才能访问
+//                //  1.2 token只应在当前网站打开期间生效,所以要保存在sessionStorage
+//                window.sessionStorage.setItem("token",res.data.token);
+//                //2. 通过导航跳转到主页,路由地址是/home  
+//                this.$router.push("/home");
+//            }
+// );   
             if(this.loginForm.username!='admin'||this.loginForm.password!='123456')
                 return this.$message.error("logn fail");   
             this.$message.success('login success');

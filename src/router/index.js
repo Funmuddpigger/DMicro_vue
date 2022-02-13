@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import SearchInfo from '../components/SearchInfo.vue'
+import Mine from '../components/Mine.vue'
+import Create from '../components/Create.vue'
+import ArticleAll from '../components/ArticleAll.vue'
 
 Vue.use(VueRouter)
 
@@ -19,6 +22,15 @@ const routes = [
   },
   {
     path: '/search-info',component: SearchInfo
+  },
+  {
+    path: '/mine',component: Mine
+  },
+  {
+    path: '/create',component: Create
+  },
+  {
+    path: '/article-all',component: ArticleAll
   }
 ]
 

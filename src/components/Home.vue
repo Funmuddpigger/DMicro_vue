@@ -1,14 +1,15 @@
-<template>
+<template >
 <el-container class="home-container">
     <!-- 头部区域 -->
-    <el-header>
-        <div class="header-first-div">
+    <el-header style="box-shadow:0 0 10px #e0e0eb;padding-bottom:10px;">
+        <div class="header-first-div"  >
             <div>
                 <span class="left-icon">DMicro</span>
             </div>
             <div class="left-but">
-                <el-button class="el-button-home" type="text" @shop="mine">商城</el-button>
-                <el-button class="el-button-home" type="text" @community="create">社区</el-button>
+                <el-button class="el-button-home" type="text" @click="home">首页</el-button>
+                <el-button class="el-button-home" type="text" @click="shop">商城</el-button>
+                <el-button class="el-button-home" type="text" @click="community">社区</el-button>
             </div>
         </div>
         <!-- 搜索栏 -->
@@ -20,7 +21,7 @@
             </div>
         </div>
         <div class="header-right-div">
-            <!-- <img class="thumb-ph" src="../assets/logo.png" alt=""> -->
+            <img class="thumb-ph" src="../assets/logo.png" alt="">
             <el-button class="el-button-home" type="text" @click="mine">我的</el-button>
             <el-button class="el-button-home" type="text" @click="create">创作</el-button>
             <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
@@ -28,7 +29,7 @@
     </el-header>
     <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="7%">
+        <el-aside width="7%" >
             <!-- 侧边细分菜单 -->
             <div class="nav-rail">....</div>
             <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds">
@@ -72,11 +73,11 @@
         <el-main>
             <div>
                 <!-- 第一块广告大横幅区域 -->
-                <div style="display: flex; justify-content: center; padding-top: 1%">
+                <div style="display: flex; justify-content: center; padding-top: 1%;">
                     <el-image class="main-img" :src="require('../assets/HomeImg/DMICROpic2.png')"></el-image>
                 </div>
                 <!-- 第二块热点区域 -->
-                <div class="title-div" style="display: ">
+                <div class="title-div"   >
                     <div style="
                 width: 25%;
                 margin-left: px;
@@ -140,7 +141,76 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 循环第二个不可 -->
+                    <!-- 循环第二个博客 -->
+                    <div class="bottom-detail-div">
+                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
+                        </a>
+                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
+                            <div class="left-div">
+                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                            </div>
+                            <div class="right-div">
+                                <div class="title-bottom-div">
+                                    <a href="">
+                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
+                                    </a>
+                                </div>
+                                <div class="like-div">
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 三 -->
+                    <div class="bottom-detail-div">
+                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
+                        </a>
+                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
+                            <div class="left-div">
+                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                            </div>
+                            <div class="right-div">
+                                <div class="title-bottom-div">
+                                    <a href="">
+                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
+                                    </a>
+                                </div>
+                                <div class="like-div">
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 4 -->
+                    <div class="bottom-detail-div">
+                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
+                        </a>
+                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
+                            <div class="left-div">
+                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                            </div>
+                            <div class="right-div">
+                                <div class="title-bottom-div">
+                                    <a href="">
+                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
+                                    </a>
+                                </div>
+                                <div class="like-div">
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 5 -->
                     <div class="bottom-detail-div">
                         <a style="margin-left: 5px; margin-top: 5px;color:black;">
                             <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
@@ -181,7 +251,7 @@ export default {
             activeIndex2: "1",
             queryString: "",
             page: 1,
-            pageSize: 10,
+            pageSize: 5,
             suggestions: []
         };
     },
@@ -242,16 +312,22 @@ export default {
         },
 
         mine() {
-
+            window.sessionStorage.setItem("token", "123456789");
+            this.$router.push("/mine");
         },
         create() {
-
+            window.sessionStorage.setItem("token", "123456789");
+            this.$router.push("/create");
         },
         shop() {
 
         },
         community() {
 
+        },
+        home() {
+            window.sessionStorage.setItem("token", "123456789");
+            this.$router.push("/home");
         }
     },
 
@@ -281,9 +357,12 @@ export default {
 }
 
 .thumb-ph {
-    width: 30%;
-    height: 30%;
-    border-radius: 50%;
+    margin-top: 5px;
+    width: 25px;
+    height:25px;
+    border-radius: 10px ;
+    border: grey  0.1px;
+    margin-right: 20px;
 }
 
 .header-right-div {
@@ -428,5 +507,13 @@ a {
 
 .title-bottom-div {
     height: 56%;
+}
+
+#building{
+    background:url("../assets/background.jpg");
+    width:100%;
+    height:100%;
+    position:fixed;
+    background-size:100% 100%;
 }
 </style>

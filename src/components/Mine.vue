@@ -2,14 +2,14 @@
 <el-container class="home-container">
     <!-- 头部区域 -->
     <el-header style="box-shadow:0 0 10px #e0e0eb;padding-bottom:10px;">
-        <div class="header-first-div" >
+        <div class="header-first-div">
             <div>
                 <span class="left-icon">DMicro</span>
             </div>
             <div class="left-but">
                 <el-button class="el-button-home" type="text" @click="home">首页</el-button>
-                <el-button class="el-button-home" type="text" @click="mine">商城</el-button>
-                <el-button class="el-button-home" type="text" @click="create">社区</el-button>
+                <el-button class="el-button-home" type="text" @shop="mine">商城</el-button>
+                <el-button class="el-button-home" type="text" @community="create">社区</el-button>
             </div>
         </div>
         <!-- 搜索栏 -->
@@ -27,92 +27,66 @@
             <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
         </div>
     </el-header>
-    <!-- 文章搜索区--左 -->
-    <div style="display:flex;;">
-        <div style="display:block;margin-top:2%;">
-            <div class="bottom-detail-div">
-                <a style="margin-left: 5px; color:black;font-size: 20px;">
-                    <span>凯世通已经具备了正式量产的技术</span>
-                </a>
-                <div style="margin-left: 1%; margin-top: 1%; display: flex;">
-                    <div class="right-div">
-                        <div class="title-bottom-div">
-                            <a href="">
-                                <span>凯世通自主研发的低能大束流离子注入机和高能离子注入机就已相继顺利通过客户验证并完成验收</span>
-                            </a>
-                        </div>
-                        <div class="like-div">
-                            <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 1000</el-button>
-                            <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                            <el-button icon="el-icon-chat-line-square" type="text" style="margin-left:20px;color:gray;" disbaled>评论 56</el-button>
-                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字</el-button>
-                            <el-button type="text" style="margin-left:20px;color:gray;" disabled>2022-10-30</el-button>
+    <el-main>
+        <!-- 头部资料卡片 -->
+        <div class="top-header">
+            <!-- 头部本人主页标识 -->
+            <div class="big-thumb-img">
+                <img shape="square" :size="50" src="../assets/logo.png">
+            </div>
+            <!-- 基本人物资料 -->
+            <div class="title-span-div">
+                <span style="font-size:25px;">White and Tea</span>
+                <span style="float:left;margin-left:30%;">粉丝数 85</span><span style="float:left;margin-left:10%;">点赞数 256</span><span style="float:left;margin-left:10%;">文章数 12</span>
+            </div>
 
-                        </div>
+        </div>
+        <!-- 下方文章导航 -->
+        <div class="card-bottom">
+                    <!-- 左侧导航卡片 -->
+            <div style="width:25%;padding-bottom:10px;">
+                <el-card class="box-card" shadow="hover">
+                    <div slot="header" class="clearfix">
+                        <span>用户新发文章</span>
+                        <el-button style="float: right; padding: 3px 0;color:grey;" type="text">查看更多</el-button>
                     </div>
-                    <div class="left-div">
-                        <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                    <div v-for="o in 4" :key="o" class="text item" style="margin-bottom:5px;">
+                        {{'文章标题 '}}
                     </div>
+                </el-card>
+            </div>
+            <!-- 右侧本人文章管理 -->
+            <div class="article-admin">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column label="发布日期" width="130">
+                        <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                        </template>
+                    </el-table-column>
+                   <el-table-column label="文章标题" width="550">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="修改">
+                        <template slot-scope="scope">
+                            <el-button icon="el-icon-edit" style="color:grey;" size="mini" type="text"  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button icon="el-icon-delete" style="color:grey;" size="mini" type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div style="margin-left:20%;">
+                    <el-pagination
+                        :page-size="10"
+                        :pager-count="11"
+                        layout="prev, pager, next"
+                        :total="1000">
+                     </el-pagination>
                 </div>
-                <el-divider></el-divider>
-            </div>
-
-            <div class="bottom-detail-div">
-                <a style="margin-left: 5px;color:black;font-size: 20px;">
-                    <span>Arm 的 CEO 西蒙已经辞职</span>
-                </a>
-                <div style="margin-left: 1%; margin-top: 1%; display: flex;">
-                    <div class="right-div">
-                        <div class="title-bottom-div">
-                            <a href="">
-                                <span>ARM高管辞职</span>
-                            </a>
-                        </div>
-                        <div class="like-div">
-                            <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 1000</el-button>
-                            <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字</el-button>
-                            <el-button type="text" style="margin-left:20px;color:gray;" disabled>2022-10-30</el-button>
-                        </div>
-                    </div>
-                    <div class="left-div">
-                        <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                    </div>
-                </div>
-                <el-divider></el-divider>
-            </div>
-            <!-- 翻页条 -->
-            <div style="margin-left:30%;">
-                <el-pagination
-                :page-size="10"
-                :pager-count="11"
-                layout="prev, pager, next"
-                :total="1000">
-            </el-pagination>
             </div>
         </div>
-        <!-- 右边热搜榜单区 -->
-        <div class="bottom-right-hotdiv">
-            <div>
-                <span style="margin-left:5%;font-size: 20px; font-weight: bolder;color:#862d2d;">热搜论坛榜</span>
-                <el-divider></el-divider>
-            </div>
-            <div>
-                <ol>
-                    <li>跑路</li>
-                    <li>删库</li>
-                    <li>走人</li>
-                    <li>显卡</li>
-                </ol>
-            </div>
-
-                    <!-- 时间区 -->
-        <div class="cal-div">
-            <el-calendar v-model="value" style="width:50;font-size:5px;">
-            </el-calendar>
-        </div>
-        </div>
-    </div>
+    </el-main>
 </el-container>
 </template>
 
@@ -120,20 +94,23 @@
 export default {
     data() {
         return {
-            url: "http://localhost:7070/article/",
-            queryString: "",
-            page: 1,
-            pageSize: 10,
-            suggestions: [],
-        };
-        {
-        value: new Date()
-      }
+            squareUrl: "../assets/logo.png",
+                    tableData: [{
+          date: '2022-01-17',
+          name: '凯世通已经具备了正式量产的技术',
+        }, {
+          date: '2022-05-04',
+          name: 'Arm 的 CEO 西蒙已经辞职',
+        }, {
+          date: '2022-05-01',
+          name: '谷歌发布Android 12L最后一个Beta更新',
+        }, {
+          date: '2021-05-03',
+          name: 'iGame GeForce RTX 3050 Ultra W OC 1美观',
+        }]
+        }
     },
     methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
         searchArticle: function () {
             var searchJson = {
                 "key": this.queryString,
@@ -181,7 +158,12 @@ export default {
                 console.log(error);
             });
         },
-
+        handleEdit(index, row) {
+        console.log(index, row);
+        },
+        handleDelete(index, row) {
+        console.log(index, row);
+        },
         logout() {
             window.sessionStorage.clear();
             this.$router.push("/login");
@@ -203,24 +185,16 @@ export default {
         home() {
             window.sessionStorage.setItem("token", "123456789");
             this.$router.push("/home");
-      },
-    },
-
+        },
+    }
 }
 </script>
 
 <style scoped>
-.cal-div{
-    margin-top: 50px;
-}
-
- .cal-div /deep/  .el-calendar-table .el-calendar-day{
-    font-size: 1px;
-    height: 30px;
-  }
 .home-container {
     height: 100%;
 }
+
 .el-header {
     display: flex;
     /* 左右对齐 */
@@ -251,12 +225,11 @@ export default {
 .thumb-ph {
     margin-top: 5px;
     width: 25px;
-    height:25px;
-    border-radius: 10px ;
-    border: grey  0.1px;
+    height: 25px;
+    border-radius: 10px;
+    border: grey 0.1px;
     margin-right: 20px;
 }
-
 
 a {
     text-decoration: none;
@@ -355,5 +328,64 @@ a {
 
 li {
     padding-top: 2%;
+}
+
+.top-header {
+    margin-top: 100px;
+    width: 80%;
+}
+
+.big-thumb-img {
+    height: 130px;
+    width: 130px;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 0 10px #ddd;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+}
+
+.big-thumb-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.title-span-div {
+    position: absolute;
+    top: 270px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 70%;
+    height: 10%;
+    background: #fff;
+    border: 1px solid #f0f5f5;
+    border-radius: 2%;
+}
+
+.title-span-div span {
+    text-align: center;
+    display: block;
+    font-size: 20px;
+    color: grey;
+}
+
+.card-bottom {
+    display: flex;
+    margin-left: 14%;
+    margin-top: 280px;
+    width: 72%;
+
+}
+.article-admin{
+    width: 75%;
+    border: 1px solid #f0f5f5;
+    margin-left: 1%;
+    margin-right: 0;
 }
 </style>
