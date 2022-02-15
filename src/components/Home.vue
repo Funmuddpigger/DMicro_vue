@@ -113,122 +113,30 @@
                 <div class="title-div" style="display: block">
                     <div style="width: 93%">
                         <el-menu :default-active="activeIndex" class="el-select-low" mode="horizontal" @select="handleSelect">
-                            <el-menu-item index="1">手机通讯</el-menu-item>
-                            <el-menu-item index="2">智能设备</el-menu-item>
-                            <el-menu-item index="3">操作系统</el-menu-item>
-                            <el-menu-item index="4">数码科技</el-menu-item>
+                            <el-menu-item index="手机">手机通讯</el-menu-item>
+                            <el-menu-item index="资讯">电脑资讯</el-menu-item>
+                            <el-menu-item index="测评">专人看法</el-menu-item>
+                            <el-menu-item index="外设">强力辅助</el-menu-item>
                         </el-menu>
                     </div>
-                    <div class="bottom-detail-div">
+                    <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
                         <a style="margin-left: 5px; margin-top: 5px;color:black;">
-                            <span>美国密歇根州霍兰德正在加强研发能力并发芯片</span>
+                            <span>{{item.artTitle}}</span>
                         </a>
                         <div style="margin-left: 1px; margin-top: 1%; display: flex;">
                             <div class="left-div">
                                 <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
                             </div>
-                            <div class="right-div">
+                            <div class="right-div" >
                                 <div class="title-bottom-div">
                                     <a href="">
-                                        <span>明年中国取消电动汽车补贴，LG 新能源将能够重新进军中国电动车市场，进而逐步缩小与宁德时代的差距。</span>
+                                        <span>{{item.artSummary}}</span>
                                     </a>
                                 </div>
                                 <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
-                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者is</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 循环第二个博客 -->
-                    <div class="bottom-detail-div">
-                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
-                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
-                        </a>
-                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
-                            <div class="left-div">
-                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                            </div>
-                            <div class="right-div">
-                                <div class="title-bottom-div">
-                                    <a href="">
-                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
-                                    </a>
-                                </div>
-                                <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
-                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者is</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 三 -->
-                    <div class="bottom-detail-div">
-                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
-                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
-                        </a>
-                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
-                            <div class="left-div">
-                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                            </div>
-                            <div class="right-div">
-                                <div class="title-bottom-div">
-                                    <a href="">
-                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
-                                    </a>
-                                </div>
-                                <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
-                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者is</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 4 -->
-                    <div class="bottom-detail-div">
-                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
-                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
-                        </a>
-                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
-                            <div class="left-div">
-                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                            </div>
-                            <div class="right-div">
-                                <div class="title-bottom-div">
-                                    <a href="">
-                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
-                                    </a>
-                                </div>
-                                <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
-                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者is</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 5 -->
-                    <div class="bottom-detail-div">
-                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
-                            <span>iGame GeForce RTX 3050 Ultra W OC 1美观</span>
-                        </a>
-                        <div style="margin-left: 1px; margin-top: 1%; display: flex;">
-                            <div class="left-div">
-                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                            </div>
-                            <div class="right-div">
-                                <div class="title-bottom-div">
-                                    <a href="">
-                                        <span>随着我国集成电路产业快速发展，12 英寸芯片生产线产能快速扩张.。</span>
-                                    </a>
-                                </div>
-                                <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 2000</el-button>
-                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者is</span>
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artRead}}</el-button>
+                                    <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{item.artRead}}</el-button>
+                                    <span style="margin-left:20px;color:gray;">作者 is</span>
                                 </div>
                             </div>
                         </div>
@@ -247,13 +155,17 @@ export default {
             url: "http://localhost:7070/article/",
             openeds: ["2"],
             uniqueOpened: false,
-            activeIndex: "1",
-            activeIndex2: "1",
+            activeIndex: "手机",
             queryString: "",
             page: 1,
             pageSize: 5,
-            suggestions: []
+            suggestions: [],
+            articleList:[]
         };
+    },
+    
+    created(){
+        this.getArticleList();
     },
     methods: {
         logout() {
@@ -261,7 +173,8 @@ export default {
             this.$router.push("/login");
         },
         handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+            this.activeIndex = key;
+            this.getArticleList();
         },
         searchArticle: function () {
             var searchJson = {
@@ -310,6 +223,32 @@ export default {
                 console.log(error);
             });
         },
+        //获取文章列表
+        getArticleList:function(){
+            console.log(this.activeIndex)
+            var searchJson = {
+                "artType": this.activeIndex,
+                "page": this.page,
+                "pageSize": this.pageSize,
+            }
+
+            this.axios({
+                    url: this.url + 'select',
+                    method: 'post',
+                    data: searchJson, //这里json对象会转换成json格式字符串发送
+                    header: {
+                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
+                    }
+                })
+                .then(res => {
+                    this.articleList = res.data.data
+                    console.log(this.articleList[0].artSummary)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+        },
 
         mine() {
             window.sessionStorage.setItem("token", "123456789");
@@ -330,7 +269,7 @@ export default {
             this.$router.push("/home");
         }
     },
-
+    
 };
 </script>
 
