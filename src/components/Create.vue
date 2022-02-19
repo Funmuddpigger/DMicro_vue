@@ -137,9 +137,10 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        window.sessionStorage.setItem("token","123456789");
+        this.$router.push("/article-all");
         }
-        // window.sessionStorage.setItem("token","123456789");
-        // this.$router.push("/article-all");
+        
     },
     save() {
 

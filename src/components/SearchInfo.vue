@@ -30,49 +30,23 @@
     <!-- 文章搜索区--左 -->
     <div style="display:flex;;">
         <div style="display:block;margin-top:2%;">
-            <div class="bottom-detail-div">
+            <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
                 <a style="margin-left: 5px; color:black;font-size: 20px;">
-                    <span>凯世通已经具备了正式量产的技术</span>
+                    <span>{{item.artTitle}}</span>
                 </a>
                 <div style="margin-left: 1%; margin-top: 1%; display: flex;">
                     <div class="right-div">
                         <div class="title-bottom-div">
-                            <a href="">
-                                <span>凯世通自主研发的低能大束流离子注入机和高能离子注入机就已相继顺利通过客户验证并完成验收</span>
+                            <a href="javascript:void(0)" @click="tapToArticle(item.artTitle)">
+                                <span>{{item.artSummary}}</span>
                             </a>
                         </div>
                         <div class="like-div">
-                            <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 1000</el-button>
-                            <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
+                            <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artLike}}</el-button>
+                            <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{item.artRead}}</el-button>
                             <el-button icon="el-icon-chat-line-square" type="text" style="margin-left:20px;color:gray;" disbaled>评论 56</el-button>
-                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字</el-button>
-                            <el-button type="text" style="margin-left:20px;color:gray;" disabled>2022-10-30</el-button>
-
-                        </div>
-                    </div>
-                    <div class="left-div">
-                        <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
-                    </div>
-                </div>
-                <el-divider></el-divider>
-            </div>
-
-            <div class="bottom-detail-div">
-                <a style="margin-left: 5px;color:black;font-size: 20px;">
-                    <span>Arm 的 CEO 西蒙已经辞职</span>
-                </a>
-                <div style="margin-left: 1%; margin-top: 1%; display: flex;">
-                    <div class="right-div">
-                        <div class="title-bottom-div">
-                            <a href="">
-                                <span>ARM高管辞职</span>
-                            </a>
-                        </div>
-                        <div class="like-div">
-                            <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 1000</el-button>
-                            <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 2396</el-button>
-                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字</el-button>
-                            <el-button type="text" style="margin-left:20px;color:gray;" disabled>2022-10-30</el-button>
+                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字 {{item.usrId}}</el-button>
+                            <el-button type="text" style="margin-left:20px;color:gray;" disabled>{{item.artPostime}}</el-button>
                         </div>
                     </div>
                     <div class="left-div">
@@ -125,10 +99,10 @@ export default {
             page: 1,
             pageSize: 10,
             suggestions: [],
-        };
-        {
-        value: new Date()
-      }
+            articleList:[],
+            value: new Date(),
+            key:"",
+        }
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -149,13 +123,11 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res)
+                    this.articleList = res.data.data;
                 })
                 .catch(err => {
                     console.log(err)
                 })
-            window.sessionStorage.setItem("token", "123456789");
-            this.$router.push("/search-info");
         },
         // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
         getSuggest(queryString, callback) {
@@ -203,9 +175,24 @@ export default {
         home() {
             window.sessionStorage.setItem("token", "123456789");
             this.$router.push("/home");
-      },
+        },
+        getParams(){
+            this.queryString = this.$route.query.res;
+            this.searchArticle();
+        },
+        tapToArticle(param){
+           this.$router.push({
+               path:'/article-all',
+               query:{
+                   artTitle:param
+               }
+           })
+           window.sessionStorage.setItem("token", "123456789");
+        },
     },
-
+        created(){
+        this.getParams();
+    },
 }
 </script>
 

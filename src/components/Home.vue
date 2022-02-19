@@ -88,23 +88,17 @@
                     </div>
                     <div style="width: 30%; margin-left: 4%">
                         <span style="font-size: 20px; font-weight: bolder">热点资讯</span>
-                        <div>
+                        <div v-for="(item,index) in hotArticleList" :key="index">
                             <div class="hot-art-div">
-                                <a href="" style="color: black">凯世通已经具备了正式量产的技术</a>
-                            </div>
-                            <div class="hot-art-div">
-                                <a href="" style="color: black">Arm 的 CEO 西蒙已经辞职</a>
+                                <a href="javascript:void(0)" @click="tapToArticle(item)" style="color: black">{{item}}</a>
                             </div>
                         </div>
                     </div>
                     <div style="width: 30%; margin-left: 4%">
-                        <span style="font-size: 20px; font-weight: bolder">热点文章</span>
-                        <div>
+                        <span style="font-size: 20px; font-weight: bolder">新发文章</span>
+                        <div v-for="(item,index) in newArticleList" :key="index">
                             <div class="hot-art-div">
-                                <a href="" style="color: black">镁光12英寸再生晶圆出货量突破10万片</a>
-                            </div>
-                            <div class="hot-art-div">
-                                <a href="" style="color: black">谷歌发布Android 12L最后一个Beta更新</a>
+                                <a href="javascript:void(0)" @click="tapToArticle(item)" style="color: black">{{item}}</a>
                             </div>
                         </div>
                     </div>
@@ -116,11 +110,11 @@
                             <el-menu-item index="手机">手机通讯</el-menu-item>
                             <el-menu-item index="资讯">电脑资讯</el-menu-item>
                             <el-menu-item index="测评">专人看法</el-menu-item>
-                            <el-menu-item index="外设">强力辅助</el-menu-item>
+                            <el-menu-item index="科技">强力辅助</el-menu-item>
                         </el-menu>
                     </div>
                     <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
-                        <a style="margin-left: 5px; margin-top: 5px;color:black;">
+                        <a href="javascript:void(0)" @click="tapToArticle(item.artTitle)" style="margin-left: 5px; margin-top: 5px;color:black;">
                             <span>{{item.artTitle}}</span>
                         </a>
                         <div style="margin-left: 1px; margin-top: 1%; display: flex;">
@@ -129,12 +123,12 @@
                             </div>
                             <div class="right-div" >
                                 <div class="title-bottom-div">
-                                    <a href="">
-                                        <span>{{item.artSummary}}</span>
+                                    <a href="javascript:void(0)" @click="tapToArticle(item.artTitle)">
+                                        <span>{{item.artTitle}}</span>
                                     </a>
                                 </div>
                                 <div class="like-div">
-                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artRead}}</el-button>
+                                    <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artLike}}</el-button>
                                     <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{item.artRead}}</el-button>
                                     <span style="margin-left:20px;color:gray;">作者 is</span>
                                 </div>
@@ -160,12 +154,16 @@ export default {
             page: 1,
             pageSize: 5,
             suggestions: [],
-            articleList:[]
+            articleList:[],
+            hotArticleList:[],
+            newArticleList:[],
         };
     },
     
     created(){
         this.getArticleList();
+        this.getNewArticleList();
+        this.getHotArticleList();
     },
     methods: {
         logout() {
@@ -196,8 +194,13 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-            window.sessionStorage.setItem("token", "123456789");
-            this.$router.push("/search-info");
+                this.$router.push({
+                    path:'/search-info',
+                    query:{
+                        res:this.queryString
+                    }
+                })
+           window.sessionStorage.setItem("token", "123456789");
         },
         // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
         getSuggest(queryString, callback) {
@@ -215,7 +218,6 @@ export default {
                     list.push({
                         "value": res.data[i]
                     });
-
                 }
                 console.log(list)
                 callback(list);
@@ -226,30 +228,61 @@ export default {
         //获取文章列表
         getArticleList:function(){
             console.log(this.activeIndex)
-            var searchJson = {
-                "artType": this.activeIndex,
+            var getArtListJson = {
+                "type": this.activeIndex,
                 "page": this.page,
                 "pageSize": this.pageSize,
             }
 
             this.axios({
-                    url: this.url + 'select',
+                    url: this.url + 'select-es',
                     method: 'post',
-                    data: searchJson, //这里json对象会转换成json格式字符串发送
+                    data: getArtListJson, //这里json对象会转换成json格式字符串发送
                     header: {
                         'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
                     }
                 })
                 .then(res => {
                     this.articleList = res.data.data
-                    console.log(this.articleList[0].artSummary)
+                    // console.log(this.articleList)
                 })
                 .catch(err => {
                     console.log(err)
                 })
-
         },
-
+        //获取最新文章
+        getNewArticleList(){
+            //调用的后台接口
+            let url = this.url + "new-article";
+            //从后台获取到对象数组
+            this.axios.get(url).then((res) => {
+                // console.log(res.data)
+                this.newArticleList = res.data.data;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        //获取Hot Top5
+        getHotArticleList(){
+            //调用的后台接口
+            let url = this.url + "hot-article" ;
+            //从后台获取到对象数组
+            this.axios.get(url).then((res) => {
+                // console.log(res.data.data)
+                this.hotArticleList = res.data.data;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        tapToArticle(param){
+           this.$router.push({
+               path:'/article-all',
+               query:{
+                   artTitle:param
+               }
+           })
+           window.sessionStorage.setItem("token", "123456789");
+        },
         mine() {
             window.sessionStorage.setItem("token", "123456789");
             this.$router.push("/mine");
@@ -397,6 +430,11 @@ export default {
     border-bottom: 1px solid #dbdbdb;
     padding-bottom: 10px;
 }
+
+.hot-art-div:hover {
+    background-color: #ccc;
+}
+
 
 a {
     text-decoration: none;

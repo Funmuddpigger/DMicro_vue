@@ -7,6 +7,7 @@ import Mine from '../components/Mine.vue'
 import Create from '../components/Create.vue'
 import ArticleAll from '../components/ArticleAll.vue'
 
+
 Vue.use(VueRouter)
 
 // 指定路由规则
@@ -44,7 +45,7 @@ router.beforeEach((to, from ,next) =>{
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
   //直接登录页面
-  if(to.path === '/login'){ return next() };
+  if(to.path === '/login'){ return next() }
   //get token
   const tokenStr = window.sessionStorage.getItem('token')
   if(!tokenStr) { 
@@ -52,6 +53,7 @@ router.beforeEach((to, from ,next) =>{
   }else{
     next();
   }
+
 })
 
 export default router 
