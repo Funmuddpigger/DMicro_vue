@@ -9,16 +9,16 @@
             <el-form :model="loginForm" label-width="0px" :rules="loginFormRules" ref="loginFormRef" class="login_form">
                 <!-- 用户名 -->
                 <el-form-item prop="username">
-                    <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
+                    <el-input v-model="loginForm.usrPhone" prefix-icon="el-icon-user"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
+                    <el-input v-model="loginForm.usrPassword" prefix-icon="el-icon-lock" type="password"></el-input>
                 </el-form-item>
                 <!-- 按钮区域 -->
                 <el-form-item class="btns">
                     <el-button type="primary" :plain=true @click="login">登录</el-button>
-                    <el-button type="waring">注册</el-button>
+                    <el-button type="waring" @click="register">注册</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -31,17 +31,17 @@ export default {
         return{
             //这是登陆表单的数据绑定对象
             loginForm:{
-                username: 'admin',
-                password: '123456'
+                usrPhone: '13712345678',
+                usrPassword: '123456789'
             },
             loginFormRules:{
                 //验证用户名是否合法,trigger blur在失去焦点时进行验证
-                username: [
+                usrPhone: [
                     { required: true, message: "请输入登录名称", trigger: "blur"},
                     { min: 3, max: 10,message: "长度在3到10个字符", trigger: "blur" }
                 ],
                 //验证密码是否合法
-                password: [
+                usrPassword: [
                     { required: true, message: "请输入登录密码", trigger: "blur"},
                     { min: 6, max: 15,message: "长度在6到15个字符", trigger: "blur" }
                 ]
@@ -50,28 +50,25 @@ export default {
     },
     methods: {
          login(){
-//            this.$refs.loginFormRef.validate(async valid => {
-//                if(!valid) return;
-//                //const { data : res } = await this.$http.post("login",this.loginForm);
-//                //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
-//                const result = await this.$http.post("login",this.loginForm);
-//                console.log(result)
-//                //判断登录状态码
-//                if(res.meta.status != 200 ) return this.$message.console.error("logn fail");
-//                else this.$message.success("login success");
-//                //1. 将登录成功之后的token保存到客户端的sessionStorage中
-//                //  1.1 项目中除了登陆之外的其他接口都必须在登录之后才能访问
-//                //  1.2 token只应在当前网站打开期间生效,所以要保存在sessionStorage
-//                window.sessionStorage.setItem("token",res.data.token);
-//                //2. 通过导航跳转到主页,路由地址是/home  
-//                this.$router.push("/home");
-//            }
-// );   
-            if(this.loginForm.username!='admin'||this.loginForm.password!='123456')
-                return this.$message.error("logn fail");   
-            this.$message.success('login success');
-            window.sessionStorage.setItem("token","123456789");
-            this.$router.push("/home");
+           this.$refs.loginFormRef.validate(async valid => {
+               if(!valid) return;
+               //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
+               const res = await this.axios.post("http://localhost:5050/user/select",this.loginForm);
+               console.log(res)
+               //判断登录状态码
+               if(res.data.code != 200 ) return this.$message.error(res.data.msg);
+               else this.$message.success(res.data.msg);
+               //1. 将登录成功之后的token保存到客户端的sessionStorage中
+               //  1.1 项目中除了登陆之外的其他接口都必须在登录之后才能访问
+               //  1.2 token只应在当前网站打开期间生效,所以要保存在sessionStorage
+               window.sessionStorage.setItem("token","123456789");
+               //2. 通过导航跳转到主页,路由地址是/home  
+            //    this.$router.push("/home");
+           }
+);   
+        },
+        register(){
+            this.$router.push("/register")
         }
     }
 };
@@ -80,7 +77,7 @@ export default {
 // scoped是vue指令控制组件样式生效区间----加上就在当前组件生效, 去掉则全局生效
 <style scoped>
 .login_container{
-    background-color: #2b4b6b;
+    background-color: grey;
     height: 100%;
 }
 

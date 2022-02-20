@@ -6,6 +6,7 @@ import SearchInfo from '../components/SearchInfo.vue'
 import Mine from '../components/Mine.vue'
 import Create from '../components/Create.vue'
 import ArticleAll from '../components/ArticleAll.vue'
+import Register from '../components/Register.vue'
 
 
 Vue.use(VueRouter)
@@ -32,6 +33,9 @@ const routes = [
   },
   {
     path: '/article-all',component: ArticleAll
+  },
+  {
+    path: '/register',component: Register
   }
 ]
 
@@ -45,7 +49,7 @@ router.beforeEach((to, from ,next) =>{
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
   //直接登录页面
-  if(to.path === '/login'){ return next() }
+  if(to.path === '/login'|| to.path === '/register'){ return next() }
   //get token
   const tokenStr = window.sessionStorage.getItem('token')
   if(!tokenStr) { 
