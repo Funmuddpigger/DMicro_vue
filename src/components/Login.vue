@@ -53,7 +53,7 @@ export default {
            this.$refs.loginFormRef.validate(async valid => {
                if(!valid) return;
                //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
-               const res = await this.axios.post("http://localhost:5050/user/select",this.loginForm);
+               const res = await this.axios.post("http://localhost:5050/user/login",this.loginForm);
                console.log(res)
                //判断登录状态码
                if(res.data.code != 200 ) return this.$message.error(res.data.msg);
@@ -61,9 +61,9 @@ export default {
                //1. 将登录成功之后的token保存到客户端的sessionStorage中
                //  1.1 项目中除了登陆之外的其他接口都必须在登录之后才能访问
                //  1.2 token只应在当前网站打开期间生效,所以要保存在sessionStorage
-               window.sessionStorage.setItem("token","123456789");
+               window.sessionStorage.setItem("token",res.data.oneData);
                //2. 通过导航跳转到主页,路由地址是/home  
-            //    this.$router.push("/home");
+               this.$router.push("/home");
            }
 );   
         },

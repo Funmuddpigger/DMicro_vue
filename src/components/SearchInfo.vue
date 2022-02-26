@@ -102,6 +102,7 @@ export default {
             articleList:[],
             value: new Date(),
             key:"",
+            token:window.sessionStorage.getItem('token')
         }
     },
     methods: {
@@ -159,11 +160,11 @@ export default {
             this.$router.push("/login");
         },
         mine() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/mine");
         },
         create() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/create");
         },
         shop() {
@@ -173,7 +174,7 @@ export default {
 
         },
         home() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
         },
         getParams(){
@@ -187,7 +188,7 @@ export default {
                    artTitle:param
                }
            })
-           window.sessionStorage.setItem("token", "123456789");
+           window.sessionStorage.setItem("token", this.token);
         },
     },
         created(){

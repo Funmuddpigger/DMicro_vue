@@ -47,7 +47,7 @@
             <div style="width:25%;padding-bottom:10px;">
                 <el-card class="box-card" shadow="hover">
                     <div slot="header" class="clearfix">
-                        <span>用户新发文章</span>
+                        <span>用户粉丝</span>
                         <el-button style="float: right; padding: 3px 0;color:grey;" type="text">查看更多</el-button>
                     </div>
                     <div v-for="o in 4" :key="o" class="text item" style="margin-bottom:5px;">
@@ -58,7 +58,7 @@
             <!-- 右侧本人文章管理 -->
             <div class="article-admin">
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column label="发布日期" width="130">
+                    <el-table-column label="发布日期" width="190">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
                             <span style="margin-left: 10px">{{ scope.row.date }}</span>
@@ -95,20 +95,17 @@ export default {
     data() {
         return {
             squareUrl: "../assets/logo.png",
-                    tableData: [{
-          date: '2022-01-17',
-          name: '凯世通已经具备了正式量产的技术',
-        }, {
-          date: '2022-05-04',
-          name: 'Arm 的 CEO 西蒙已经辞职',
-        }, {
-          date: '2022-05-01',
-          name: '谷歌发布Android 12L最后一个Beta更新',
-        }, {
-          date: '2021-05-03',
-          name: 'iGame GeForce RTX 3050 Ultra W OC 1美观',
-        }]
+            tableData: [],
+            page:"1",
+            pageSize:"10",
+            token:window.sessionStorage.getItem('token'),
+            queryString:"",
+            url: "http://localhost:7070/article/",
+
         }
+    },
+    created() {
+        this.getArticleByUsr()
     },
     methods: {
         searchArticle: function () {
@@ -131,7 +128,7 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/search-info");
         },
         // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
@@ -158,6 +155,36 @@ export default {
                 console.log(error);
             });
         },
+        getArticleByUsr(){
+           var searchJson = {
+                "key":this.token,
+                "page": this.page,
+                "pageSize": this.pageSize,
+            }
+            console.log()
+            this.axios({
+                    url: this.url + 'search-usr',
+                    method: 'post',
+                    header: {
+                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
+
+                    },
+                    data: searchJson //这里json对象会转换成json格式字符串发送
+                })
+                .then(res => {
+                   for (let i = 0; i < res.data.data.length; i++) {
+                    this.tableData.push({
+                        "date": res.data.data[i].artPostime,
+                        "name": res.data.data[i].artTitle
+                    });
+                   }
+                   console.log(this.tableData)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            window.sessionStorage.setItem("token", this.token);
+        },
         handleEdit(index, row) {
         console.log(index, row);
         },
@@ -169,11 +196,11 @@ export default {
             this.$router.push("/login");
         },
         mine() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/mine");
         },
         create() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/create");
         },
         shop() {
@@ -183,7 +210,7 @@ export default {
 
         },
         home() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
         },
     }

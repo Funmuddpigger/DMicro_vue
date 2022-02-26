@@ -157,6 +157,7 @@ export default {
             articleList:[],
             hotArticleList:[],
             newArticleList:[],
+            token:window.sessionStorage.getItem('token'),
         };
     },
     
@@ -200,7 +201,7 @@ export default {
                         res:this.queryString
                     }
                 })
-           window.sessionStorage.setItem("token", "123456789");
+           window.sessionStorage.setItem("token", this.token);
         },
         // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
         getSuggest(queryString, callback) {
@@ -281,14 +282,14 @@ export default {
                    artTitle:param
                }
            })
-           window.sessionStorage.setItem("token", "123456789");
+           window.sessionStorage.setItem("token", this.token);
         },
         mine() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/mine");
         },
         create() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/create");
         },
         shop() {
@@ -298,7 +299,7 @@ export default {
 
         },
         home() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
         }
     },
