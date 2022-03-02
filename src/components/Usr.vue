@@ -58,21 +58,15 @@
             <!-- 右侧本人文章管理 -->
             <div class="article-admin">
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column label="发布日期" width="190">
+                    <el-table-column label="发布日期" width="230">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
                             <span style="margin-left: 10px">{{ scope.row.date }}</span>
                         </template>
                     </el-table-column>
-                   <el-table-column label="文章标题" width="480">
+                   <el-table-column label="文章标题" width="570">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{ scope.row.name }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="修改">
-                        <template slot-scope="scope">
-                            <el-button icon="el-icon-edit" style="color:grey;" size="mini" type="text"  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            <el-button icon="el-icon-delete" style="color:grey;" size="mini" type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,7 +75,7 @@
                         :page-size="10"
                         :pager-count="11"
                         layout="prev, pager, next"
-                        :total="1000">
+                        :total="10">
                      </el-pagination>
                 </div>
             </div>
@@ -100,10 +94,12 @@ export default {
             pageSize:"10",
             token:window.sessionStorage.getItem('token'),
             queryString:"",
-            url: "http://localhost:7070/article/",
+            urlArt: "http://localhost:7070/article/",
+            urlUsr: "http://localhost:5050/user/",
             usrData:"",
             total:"",
             like:0,
+            usrId:"",
 
         }
     },
@@ -118,7 +114,7 @@ export default {
                 "pageSize": this.pageSize,
             }
             this.axios({
-                    url: this.url + 'search',
+                    url: this.urlArt + 'search',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     header: {
@@ -138,7 +134,7 @@ export default {
         getSuggest(queryString, callback) {
             var list = [];
             //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" + queryString;
+            let url = this.urlArt + "suggest?suggestKey=" + queryString;
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
@@ -159,18 +155,19 @@ export default {
             });
         },
         getArticleByUsr(){
+            this.usrId = this.$route.query.usrId;
            var searchJson = {
-                "key":this.token,
+                "key":this.usrId,
                 "page": this.page,
                 "pageSize": this.pageSize,
             }
+            
             console.log()
             this.axios({
-                    url: this.url + 'search-usr',
+                    url: this.urlArt + 'search-usr',
                     method: 'post',
                     header: {
                         'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
-
                     },
                     data: searchJson //这里json对象会转换成json格式字符串发送
                 })
@@ -221,9 +218,64 @@ export default {
         },
 
         follow(usrId){
-            console.log(usrId)
-        }
-    }
+            var json = {
+                "usrId":usrId
+            }
+            this.axios({
+                    url: this.urlUsr + 'follow',
+                    method: 'post',
+                    header: {
+                        'Content-Type': 'application/json'//如果写成contentType会报错,如果不写这条也报错
+
+                    },
+                    data: json //这里json对象会转换成json格式字符串发送
+                })
+                .then(res => {
+                    console.log(res.data)
+
+                   
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        // getParams(){
+        //     this.usrId = this.$route.query.usrId;
+        //     var json = {
+        //         "key": this.usrId,
+        //          "page": this.page,
+        //         "pageSize": this.pageSize,
+        //     }
+        //     console.log(this.usrId)
+        //     var token = window.sessionStorage.getItem('token')
+        //     this.axios({
+        //             url: this.urlArt + 'search-usr',
+        //             method: 'post',
+        //             header: {
+        //                 'Token':token,
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             data: json, //这里json对象会转换成json格式字符串发送
+        //         })
+        //         .then(res => {
+        //             console.log(res.data)
+        //             this.artText = res.data.oneData.artText,
+        //             this.artType = res.data.oneData.artType,
+        //             this.artRead = res.data.oneData.artRead,
+        //             this.artLike = res.data.oneData.artLike,
+        //             this.usrId = res.data.oneData.usrId,
+        //             this.commentList = res.data.data,
+        //             this.nickName = res.data.mapData.userInfo.usrNickname,
+        //             this.isLike = res.data.mapData.isLike
+        //         })
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
+        // },
+    },
+    created(){
+        this.getArticleByUsr();
+    },
 }
 </script>
 

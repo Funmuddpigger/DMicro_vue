@@ -7,14 +7,14 @@ import Mine from '../components/Mine.vue'
 import Create from '../components/Create.vue'
 import ArticleAll from '../components/ArticleAll.vue'
 import Register from '../components/Register.vue'
-
+import Usr from '../components/Usr.vue'
 
 Vue.use(VueRouter)
 
 // 指定路由规则
 const routes = [
   {
-    path: '/',redirect: '/login'
+    path: '/',redirect: '/home'
   },
   {
     path: '/login',component: Login
@@ -36,6 +36,9 @@ const routes = [
   },
   {
     path: '/register',component: Register
+  },
+  {
+    path: '/usr',component: Usr
   }
 ]
 
@@ -49,10 +52,10 @@ router.beforeEach((to, from ,next) =>{
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
   //直接登录页面
-  if(to.path === '/login'|| to.path === '/register'){ return next() }
+  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'){ return next() }
   //get token
   const tokenStr = window.sessionStorage.getItem('token')
-  if(!tokenStr) { 
+  if(tokenStr == null || tokenStr == ""||tokenStr=="undefined") { 
     return next('/login')
   }else{
     next();

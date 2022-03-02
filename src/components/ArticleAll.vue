@@ -34,9 +34,9 @@
                 <el-card shadow="never">
                     <img src="../assets/logo.png" class="image">
                     <div style="padding: 14px;">
-                        <span >White and Tea</span>
+                        <span >{{nickName}}</span>
                         <div class="bottom clearfix">
-                            <el-button type="text" class="button">更多信息</el-button>
+                            <el-button type="text" class="button" @click="more(usrId)">更多信息</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -115,7 +115,11 @@ export default {
                 artText:"",
                 artRead:"",
                 artLike:"",
+                token:window.sessionStorage.getItem('token'),
                 commentList:[],
+                nickName:"",
+                isLike:false,
+                usrId:"",
             }
         },
     methods: {
@@ -175,11 +179,11 @@ export default {
             this.$router.push("/login");
         },
         mine() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/mine");
         },
         create() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/create");
         },
         shop() {
@@ -189,13 +193,14 @@ export default {
 
         },
         home() {
-            window.sessionStorage.setItem("token", "123456789");
+            window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
         },
         getParams(){
             this.artTitle = this.$route.query.artTitle;
             var searchJson = {
                 "title": this.artTitle,
+                "token": this.token,
             }
             this.axios({
                     url: this.url + 'select-es',
@@ -211,11 +216,23 @@ export default {
                     this.artType = res.data.oneData.artType,
                     this.artRead = res.data.oneData.artRead,
                     this.artLike = res.data.oneData.artLike,
-                    this.commentList = res.data.data
+                    this.usrId = res.data.oneData.usrId,
+                    this.commentList = res.data.data,
+                    this.nickName = res.data.mapData.userInfo.usrNickname,
+                    this.isLike = res.data.mapData.isLike
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        more(param){
+             this.$router.push({
+               path:'/usr',
+               query:{
+                   usrId:param
+               }
+           })
+           window.sessionStorage.setItem("token", this.token);
         }
     },
     created(){
