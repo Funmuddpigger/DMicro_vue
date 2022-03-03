@@ -37,7 +37,8 @@
             <!-- 基本人物资料 -->
             <div class="title-span-div">
                 <span style="font-size:25px;">{{usrData.usrNickname}}</span>
-                <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" @click="follow(usrData.usrId)">关注</span>
+                <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" v-if="!isFollowed" @click="follow(usrData.usrId)">关注</span>
+                <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" v-if="isFollowed" @click="follow(usrData.usrId)">取消关注</span>
                 <span style="float:left;margin-left:20%;">粉丝数 85</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
             </div>
         </div>
@@ -50,8 +51,8 @@
                         <span>用户粉丝</span>
                         <el-button style="float: right; padding: 3px 0;color:grey;" type="text">查看更多</el-button>
                     </div>
-                    <div v-for="o in 4" :key="o" class="text item" style="margin-bottom:5px;">
-                        {{'文章标题 '}}
+                    <div v-for="(item,index) in fansList" :key="index" class="text item" style="margin-bottom:5px;" @click="tapToUsr(item.usrId)">
+                        {{item.usrNickname}}
                     </div>
                 </el-card>
             </div>
@@ -100,7 +101,9 @@ export default {
             total:"",
             like:0,
             usrId:"",
-
+            fansList:[],
+            isFollowed:false,
+            fansNum:0,
         }
     },
     created() {
@@ -117,7 +120,7 @@ export default {
                     url: this.urlArt + 'search',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
-                    header: {
+                    headers: {
                         'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
                     }
                 })
@@ -155,21 +158,20 @@ export default {
             });
         },
         getArticleByUsr(){
-            this.usrId = this.$route.query.usrId;
+           this.usrId = this.$route.query.usrId;
            var searchJson = {
                 "key":this.usrId,
                 "page": this.page,
                 "pageSize": this.pageSize,
             }
-            
-            console.log()
             this.axios({
                     url: this.urlArt + 'search-usr',
                     method: 'post',
-                    header: {
+                    data: searchJson, //这里json对象会转换成json格式字符串发送
+                    headers: {
                         'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
+                        'token': window.sessionStorage.getItem('token')
                     },
-                    data: searchJson //这里json对象会转换成json格式字符串发送
                 })
                 .then(res => {
                     console.log(res.data)
@@ -181,6 +183,9 @@ export default {
                         "name": res.data.data[i].artTitle,
                     });
                     this.like = res.data.data[i].artLike + this.like
+                    this.fansList = res.data.mapData.fans
+                    this.fansList = res.data.mapData.isFollowed
+                    this.fansNum = res.data.mapData.fansNum 
                    }
                 })
                 .catch(err => {
@@ -217,61 +222,39 @@ export default {
             this.$router.push("/home");
         },
 
-        follow(usrId){
+        follow(param){
             var json = {
-                "usrId":usrId
+                "usrId":param
             }
+            console.log(param)
             this.axios({
                     url: this.urlUsr + 'follow',
                     method: 'post',
-                    header: {
-                        'Content-Type': 'application/json'//如果写成contentType会报错,如果不写这条也报错
-
-                    },
-                    data: json //这里json对象会转换成json格式字符串发送
+                    data: json, //这里json对象会转换成json格式字符串发送
+                    headers: {
+                        'Content-Type': 'application/json',//如果写成contentType会报错,如果不写这条也报错
+                        'token': window.sessionStorage.getItem('token')
+                    }
                 })
                 .then(res => {
                     console.log(res.data)
-
-                   
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
-        // getParams(){
-        //     this.usrId = this.$route.query.usrId;
-        //     var json = {
-        //         "key": this.usrId,
-        //          "page": this.page,
-        //         "pageSize": this.pageSize,
-        //     }
-        //     console.log(this.usrId)
-        //     var token = window.sessionStorage.getItem('token')
-        //     this.axios({
-        //             url: this.urlArt + 'search-usr',
-        //             method: 'post',
-        //             header: {
-        //                 'Token':token,
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             data: json, //这里json对象会转换成json格式字符串发送
-        //         })
-        //         .then(res => {
-        //             console.log(res.data)
-        //             this.artText = res.data.oneData.artText,
-        //             this.artType = res.data.oneData.artType,
-        //             this.artRead = res.data.oneData.artRead,
-        //             this.artLike = res.data.oneData.artLike,
-        //             this.usrId = res.data.oneData.usrId,
-        //             this.commentList = res.data.data,
-        //             this.nickName = res.data.mapData.userInfo.usrNickname,
-        //             this.isLike = res.data.mapData.isLike
-        //         })
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
+        getParams(){
+            this.usrId = this.$route.query.usrId;
+        },
+        tapToUsr(param){
+                this.$router.push({
+               path:'/usr',
+               query:{
+                   usrId:param
+               }
+           })
+           window.sessionStorage.setItem("token", this.token);
+        }
     },
     created(){
         this.getArticleByUsr();

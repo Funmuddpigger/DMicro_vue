@@ -46,6 +46,8 @@ const router = new VueRouter({
   routes
 })
 
+
+
 router.beforeEach((to, from ,next) =>{
   //to 将要访问的路径
   //from 从哪个路径跳转过来
@@ -64,3 +66,7 @@ router.beforeEach((to, from ,next) =>{
 })
 
 export default router 
+
+
+ 
+

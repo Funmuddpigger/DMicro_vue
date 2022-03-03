@@ -37,7 +37,6 @@
             <!-- 基本人物资料 -->
             <div class="title-span-div">
                 <span style="font-size:25px;">{{usrData.usrNickname}}</span>
-                <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" @click="follow(usrData.usrId)">关注</span>
                 <span style="float:left;margin-left:20%;">粉丝数 85</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
             </div>
         </div>
@@ -81,7 +80,7 @@
                         :page-size="10"
                         :pager-count="11"
                         layout="prev, pager, next"
-                        :total="1000">
+                        :total="10">
                      </el-pagination>
                 </div>
             </div>
@@ -100,7 +99,8 @@ export default {
             pageSize:"10",
             token:window.sessionStorage.getItem('token'),
             queryString:"",
-            url: "http://localhost:7070/article/",
+            urlArt: "http://localhost:7070/article/",
+            urlUsr: "http://localhost:5050/user/",
             usrData:"",
             total:"",
             like:0,
@@ -118,7 +118,7 @@ export default {
                 "pageSize": this.pageSize,
             }
             this.axios({
-                    url: this.url + 'search',
+                    url: this.urlArt + 'search',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     header: {
@@ -138,7 +138,7 @@ export default {
         getSuggest(queryString, callback) {
             var list = [];
             //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" + queryString;
+            let url = this.urlArt + "suggest?suggestKey=" + queryString;
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
@@ -160,17 +160,16 @@ export default {
         },
         getArticleByUsr(){
            var searchJson = {
-                "key":this.token,
                 "page": this.page,
                 "pageSize": this.pageSize,
             }
             console.log()
             this.axios({
-                    url: this.url + 'search-usr',
+                    url: this.urlArt + 'search-usr',
                     method: 'post',
-                    header: {
+                    headers: {
                         'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
-
+                        'Token': window.sessionStorage.getItem('token')
                     },
                     data: searchJson //这里json对象会转换成json格式字符串发送
                 })
@@ -221,7 +220,26 @@ export default {
         },
 
         follow(usrId){
-            console.log(usrId)
+            var json = {
+                "usrId":usrId
+            }
+            this.axios({
+                    url: this.urlUsr + 'follow',
+                    method: 'post',
+                    header: {
+                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
+
+                    },
+                    data: json //这里json对象会转换成json格式字符串发送
+                })
+                .then(res => {
+                    console.log(res.data)
+
+                   
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 }
