@@ -37,7 +37,7 @@
             <!-- 基本人物资料 -->
             <div class="title-span-div">
                 <span style="font-size:25px;">{{usrData.usrNickname}}</span>
-                <span style="float:left;margin-left:20%;">粉丝数 85</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
+                <span style="float:left;margin-left:20%;">粉丝数 {{fansData.fansNum}}</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
             </div>
         </div>
         <!-- 下方文章导航 -->
@@ -49,8 +49,8 @@
                         <span>用户粉丝</span>
                         <el-button style="float: right; padding: 3px 0;color:grey;" type="text">查看更多</el-button>
                     </div>
-                    <div v-for="o in 4" :key="o" class="text item" style="margin-bottom:5px;">
-                        {{'文章标题 '}}
+                    <div v-for="(item,index) in fansData.fans" :key="index" class="text item" style="margin-bottom:5px;">
+                        {{item.usrNickname}}
                     </div>
                 </el-card>
             </div>
@@ -104,6 +104,7 @@ export default {
             usrData:"",
             total:"",
             like:0,
+            fansData:"",
 
         }
     },
@@ -183,6 +184,7 @@ export default {
                         "name": res.data.data[i].artTitle,
                     });
                     this.like = res.data.data[i].artLike + this.like
+                    this.fansData = res.data.mapData
                    }
                 })
                 .catch(err => {
@@ -217,29 +219,6 @@ export default {
         home() {
             window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
-        },
-
-        follow(usrId){
-            var json = {
-                "usrId":usrId
-            }
-            this.axios({
-                    url: this.urlUsr + 'follow',
-                    method: 'post',
-                    header: {
-                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
-
-                    },
-                    data: json //这里json对象会转换成json格式字符串发送
-                })
-                .then(res => {
-                    console.log(res.data)
-
-                   
-                })
-                .catch(err => {
-                    console.log(err)
-                })
         }
     }
 }

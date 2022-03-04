@@ -39,7 +39,7 @@
                 <span style="font-size:25px;">{{usrData.usrNickname}}</span>
                 <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" v-if="!isFollowed" @click="follow(usrData.usrId)">关注</span>
                 <span type="text" style="float:left;margin-left:10%;color:black;cursor:pointer;border-bottom:1px solid" v-if="isFollowed" @click="follow(usrData.usrId)">取消关注</span>
-                <span style="float:left;margin-left:20%;">粉丝数 85</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
+                <span style="float:left;margin-left:20%;">粉丝数 {{fansNum}}</span><span style="float:left;margin-left:10%;">点赞数 {{like}}</span><span style="float:left;margin-left:10%;">文章数 {{total}}</span>
             </div>
         </div>
         <!-- 下方文章导航 -->
@@ -184,8 +184,9 @@ export default {
                     });
                     this.like = res.data.data[i].artLike + this.like
                     this.fansList = res.data.mapData.fans
-                    this.fansList = res.data.mapData.isFollowed
+                    this.isFollowed = res.data.mapData.isFollowed
                     this.fansNum = res.data.mapData.fansNum 
+
                    }
                 })
                 .catch(err => {
@@ -237,6 +238,8 @@ export default {
                     }
                 })
                 .then(res => {
+                    this.isFollowed = res.data.oneData
+                    console.log(this.isFollowed)
                     console.log(res.data)
                 })
                 .catch(err => {
