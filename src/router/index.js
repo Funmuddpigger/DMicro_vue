@@ -8,6 +8,10 @@ import Create from '../components/Create.vue'
 import ArticleAll from '../components/ArticleAll.vue'
 import Register from '../components/Register.vue'
 import Usr from '../components/Usr.vue'
+import Commity from '../components/Commity.vue'
+import infiniteScroll from 'vue-infinite-scroll'
+
+Vue.use(infiniteScroll)
 
 Vue.use(VueRouter)
 
@@ -39,6 +43,9 @@ const routes = [
   },
   {
     path: '/usr',component: Usr
+  },
+  {
+    path: '/commity',component: Commity
   }
 ]
 

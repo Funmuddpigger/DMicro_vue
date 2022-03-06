@@ -293,10 +293,10 @@ export default {
             this.$router.push("/create");
         },
         shop() {
-
         },
         community() {
-
+            window.sessionStorage.setItem("token", this.token);
+            this.$router.push("/commity");
         },
         home() {
             window.sessionStorage.setItem("token", this.token);
@@ -320,9 +320,8 @@ export default {
     align-items: center;
 }
 
-.el-header div {
-    font-size: larger;
-    margin-left: 1%;
+.header-first-div {
+    display: flex;
 }
 
 .el-button-home {

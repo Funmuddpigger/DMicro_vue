@@ -171,7 +171,8 @@ export default {
 
         },
         community() {
-
+            window.sessionStorage.setItem("token", this.token);
+            this.$router.push("/commity");
         },
         home() {
             window.sessionStorage.setItem("token", this.token);

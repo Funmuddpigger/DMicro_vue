@@ -54,6 +54,7 @@ export default {
             artText: '',
             artType: '',
             artSummary:'',
+            token: window.sessionStorage.getItem('token'),
             usrId:'1',
             url: "http://localhost:7070/article/",
             options: [{
@@ -127,8 +128,9 @@ export default {
                     url: this.url + 'insert',
                     method: 'post',
                     data: insertJson, //这里json对象会转换成json格式字符串发送
-                    header: {
-                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
+                    headers: {
+                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
+                        'token':window.sessionStorage.getItem('token')
                     }
                 })
                 .then(res => {
@@ -137,7 +139,7 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        window.sessionStorage.setItem("token","123456789");
+        window.sessionStorage.setItem("token",this.token);
         this.$router.push("/article-all");
         }
         
