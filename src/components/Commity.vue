@@ -197,19 +197,6 @@ export default {
             let url = this.urlTop + "suggest?suggestKey=" + queryTopicSuggest;
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
-                //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
-                console.log(res)
-                // for (let i = 0; i < res.data.length; i++) {
-                    
-                //     console.log({
-                //         "id":res.data[i].id,
-                //         "value": res.data[i]
-                //     })
-                //     // list.push({
-                //     //     // "value": res.data[i]
-                //     // });
-                // }
-                console.log(list)
                 callback(res.data.data);
             }).catch((error) => {
                 console.log(error);
@@ -232,10 +219,32 @@ export default {
         },
         post(key){
             if(key.id !=null && key.id != undefined){
-                console.log(key.id)
+               var topicId =  key.id
             }else{
                 console.log(this.queryTopicSuggest)
             }
+            let url = this.urlTop + "post";
+            var json = {
+                "topicId":topicId,
+                "topicUsrText":this.textarea,
+                "topicText":this.queryTopicSuggest,
+            }
+            this.axios({
+                    url: url,
+                    method: 'post',
+                    data:json,
+                    headers: {
+                        'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                        'token':this.token
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                    
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
         selectUsr(){
            let url = this.urlUsr + "select-by-id";

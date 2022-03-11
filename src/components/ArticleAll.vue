@@ -55,7 +55,8 @@
                         </p>
                     </div>
                     <div class="like-div">
-                        <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{artLike}}</el-button>
+                        <el-button type="text" style="color:gray;" v-if="isLike==false" icon="el-icon-caret-top">赞 {{artLike}}</el-button>
+                        <el-button type="text" style="color:gray;" v-else icon="el-icon-caret-top">已赞 {{artLike}}</el-button>
                         <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{artRead}}</el-button>
                     </div>
                 </div>
@@ -107,6 +108,7 @@ export default {
     data() {
             return {
                 url: "http://localhost:7070/article/",
+                urlUsr: "http://localhost:5050/user/",
                 score: null,
                 colors: { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' },
                 artTitle:"",
@@ -118,7 +120,7 @@ export default {
                 token:window.sessionStorage.getItem('token'),
                 commentList:[],
                 nickName:"",
-                isLike:false,
+                isLike:true,
                 usrId:"",
             }
         },
@@ -201,14 +203,14 @@ export default {
             this.artTitle = this.$route.query.artTitle;
             var searchJson = {
                 "title": this.artTitle,
-                "token": this.token,
             }
             this.axios({
                     url: this.url + 'select-es',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     header: {
-                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
+                        'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                        "token": this.token,
                     }
                 })
                 .then(res => {
@@ -219,12 +221,24 @@ export default {
                     this.artLike = res.data.oneData.artLike,
                     this.usrId = res.data.oneData.usrId,
                     this.commentList = res.data.data,
-                    this.nickName = res.data.mapData.userInfo.usrNickname,
                     this.isLike = res.data.mapData.isLike
+                    this.getUsrInfo(this.usrId)
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        getUsrInfo(usrId){
+            //调用的后台接口
+            let url = this.urlUsr + "select-by-id?id=" + usrId;
+            //从后台获取到对象数组
+            this.axios.get(url).then((res) => {
+                //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
+                console.log(res.data)
+                this.nickName = res.data.oneData.usrNickname
+            }).catch((error) => {
+                console.log(error);
+            });
         },
         more(param){
              this.$router.push({
