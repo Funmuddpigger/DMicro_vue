@@ -1,34 +1,7 @@
 <template>
-<el-container class="home-container">
-    <!-- 头部区域 -->
-    <el-header style="box-shadow:0 0 10px #e0e0eb;padding-bottom:10px;">
-        <div class="header-first-div" >
-            <div>
-                <span class="left-icon">DMicro</span>
-            </div>
-            <div class="left-but">
-                <el-button class="el-button-home" type="text" @click="home">首页</el-button>
-                <el-button class="el-button-home" type="text" @click="mine">商城</el-button>
-                <el-button class="el-button-home" type="text" @click="create">社区</el-button>
-            </div>
-        </div>
-        <!-- 搜索栏 -->
-        <div class="search-div">
-            <div>
-                <el-autocomplete style="font-size:15px;" :trigger-on-focus="false" :fetch-suggestions="getSuggest" v-model="queryString" @select="queryString" placeholder="请输入内容">
-                </el-autocomplete>
-                <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
-            </div>
-        </div>
-        <div class="header-right-div">
-            <img class="thumb-ph" src="../assets/logo.png" alt="">
-            <el-button class="el-button-home" type="text" @click="mine">我的</el-button>
-            <el-button class="el-button-home" type="text" @click="create">创作</el-button>
-            <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
-        </div>
-    </el-header>
+<search-header>
     <!-- 文章搜索区--左 -->
-    <div style="display:flex;;">
+    <div style="display:flex;margin-left:10%;">
         <div style="display:block;margin-top:2%;">
             <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
                 <a style="margin-left: 5px; color:black;font-size: 20px;">
@@ -50,19 +23,15 @@
                         </div>
                     </div>
                     <div class="left-div">
-                        <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                        <el-image class="small-img" :src="item.artUrl"></el-image>
                     </div>
                 </div>
                 <el-divider></el-divider>
             </div>
             <!-- 翻页条 -->
             <div style="margin-left:30%;">
-                <el-pagination
-                :page-size="10"
-                :pager-count="11"
-                layout="prev, pager, next"
-                :total="1000">
-            </el-pagination>
+                <el-pagination :page-size="10" :pager-count="11" layout="prev, pager, next" :total="total">
+                </el-pagination>
             </div>
         </div>
         <!-- 右边热搜榜单区 -->
@@ -80,34 +49,41 @@
                 </ol>
             </div>
 
-                    <!-- 时间区 -->
-        <div class="cal-div">
-            <el-calendar v-model="value" style="width:50;font-size:5px;">
-            </el-calendar>
-        </div>
+            <!-- 时间区 -->
+            <div class="cal-div">
+                <el-calendar v-model="value" style="width:50;font-size:5px;">
+                </el-calendar>
+            </div>
         </div>
     </div>
-</el-container>
+</search-header>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            url: "http://localhost:7070/article/",
+            queryString :"",
+            urlArt: "http://localhost:7070/article/",
             queryString: "",
             page: 1,
             pageSize: 10,
             suggestions: [],
-            articleList:[],
+            articleList: [],
             value: new Date(),
-            key:"",
-            token:window.sessionStorage.getItem('token')
+            key: "",
+            total:1000,
+            token: window.sessionStorage.getItem('token')
         }
     },
+    created() {
+        this.getParams();
+    },
     methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+        getParams() {
+            this.queryString = this.$route.query.res;
+            console.log(this.queryString)
+            this.searchArticle();
         },
         searchArticle: function () {
             var searchJson = {
@@ -116,7 +92,7 @@ export default {
                 "pageSize": this.pageSize,
             }
             this.axios({
-                    url: this.url + 'search',
+                    url: this.urlArt + 'search',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     header: {
@@ -124,107 +100,43 @@ export default {
                     }
                 })
                 .then(res => {
-                    this.articleList = res.data.data;
+                    this.articleList = res.data.data
+                    this.total = res.data.data.total
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        },
-        // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
-        getSuggest(queryString, callback) {
-            var list = [];
-            //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" + queryString;
-            //从后台获取到对象数组
-            this.axios.get(url).then((res) => {
-                //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
-                console.log(res)
-                for (let i = 0; i < res.data.length; i++) {
-                    console.log({
-                        "value": res.data[i]
-                    })
-                    list.push({
-                        "value": res.data[i]
-                    });
-
+            this.$router.push({
+                path: '/search-info',
+                query: {
+                    res: this.queryString
                 }
-                console.log(list)
-                callback(list);
-            }).catch((error) => {
-                console.log(error);
-            });
-        },
-
-        logout() {
-            window.sessionStorage.clear();
-            this.$router.push("/login");
-        },
-        mine() {
+            })
+            .catch(()=>{})
             window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/mine");
         },
-        create() {
+        tapToArticle(param) {
+            this.$router.push({
+                path: '/article-all',
+                query: {
+                    artTitle: param
+                }
+            })
             window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/create");
-        },
-        shop() {
-
-        },
-        community() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/commity");
-        },
-        home() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/home");
-        },
-        getParams(){
-            this.queryString = this.$route.query.res;
-            this.searchArticle();
-        },
-        tapToArticle(param){
-           this.$router.push({
-               path:'/article-all',
-               query:{
-                   artTitle:param
-               }
-           })
-           window.sessionStorage.setItem("token", this.token);
         },
     },
-        created(){
-        this.getParams();
-    },
+
 }
 </script>
 
 <style scoped>
-.cal-div{
+.cal-div {
     margin-top: 50px;
 }
 
- .cal-div /deep/  .el-calendar-table .el-calendar-day{
+.cal-div /deep/ .el-calendar-table .el-calendar-day {
     font-size: 1px;
     height: 30px;
-  }
-.home-container {
-    height: 100%;
-}
-.el-header {
-    display: flex;
-    /* 左右对齐 */
-    justify-content: space-between;
-    padding-left: 0;
-    align-items: center;
-}
-
-.el-header div {
-    font-size: larger;
-    margin-left: 1%;
-}
-
-.el-button-home {
-    color: black;
 }
 
 .thumb-ph {
@@ -233,19 +145,14 @@ export default {
     border-radius: 50%;
 }
 
-.header-right-div {
-    display: flex;
-}
-
 .thumb-ph {
     margin-top: 5px;
     width: 25px;
-    height:25px;
-    border-radius: 10px ;
-    border: grey  0.1px;
+    height: 25px;
+    border-radius: 10px;
+    border: grey 0.1px;
     margin-right: 20px;
 }
-
 
 a {
     text-decoration: none;
@@ -254,38 +161,13 @@ a {
     color: gray;
 }
 
-.header-first-div {
-    display: flex;
-}
-
-.search-div {
-    margin-top: 15px;
-    width: 70%;
-    display: flex;
-
-}
-
-.search-div div {
-    width: 80%;
-    text-align: center;
-    margin-left: 10%;
-}
-
 .el-header div {
     display: flex;
 }
 
-.left-icon {
-    align-items: center;
-}
-
-.left-but {
-    padding-left: 20%;
-}
-
 .left-div {
-    margin-left: 2%;
-    width: 16%;
+    margin-left: 5%;
+    width: 15%;
     float: left;
 }
 

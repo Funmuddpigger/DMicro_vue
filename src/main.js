@@ -9,6 +9,11 @@ import axios from 'axios'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueAxios from "vue-axios";
+import header from './components/Header.vue'
+
+
+
+Vue.component('search-header', header)
  
 Vue.use(VueAxios, axios)
 	

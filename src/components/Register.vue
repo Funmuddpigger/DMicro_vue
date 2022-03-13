@@ -26,7 +26,12 @@
 </template>
 
 <script>
+import ImageUtils from '../utils/ImageUtils.vue'
+
 export default {
+    components:{
+        ImageUtils
+    },
     data() {
         var checkphoneNum = (rule, value, callback) => {
             if (!value) {
@@ -116,18 +121,12 @@ export default {
             this.$refs[formName].resetFields();
         },
         handleAvatarSuccess(res, file) {
-
-            this.imageUrl = URL.createObjectURL(file.raw);
-            this.trueUrl= res.oneData
-            console.log(res)
-            console.log(this.imageUrl)
+            let resData = ImageUtils.handleAvatarSuccess(res, file);
+            console.log(resData)
         },
         beforeAvatarUpload(file) {
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-            }
-            return isLt2M;
+            ImageUtils.beforeAvatarUpload(file);
+            console.log(0)
         }
     },
 

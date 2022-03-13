@@ -1,35 +1,8 @@
-<template >
-<el-container class="home-container">
-    <!-- 头部区域 -->
-    <el-header style="box-shadow:0 0 10px #e0e0eb;padding-bottom:10px;">
-        <div class="header-first-div"  >
-            <div>
-                <span class="left-icon">DMicro</span>
-            </div>
-            <div class="left-but">
-                <el-button class="el-button-home" type="text" @click="home">首页</el-button>
-                <el-button class="el-button-home" type="text" @click="shop">商城</el-button>
-                <el-button class="el-button-home" type="text" @click="community">社区</el-button>
-            </div>
-        </div>
-        <!-- 搜索栏 -->
-        <div class="search-div">
-            <div>
-                <el-autocomplete style="font-size:15px;" :trigger-on-focus="false" :fetch-suggestions="getSuggest" v-model="queryString" @select="queryString" placeholder="请输入内容">
-                </el-autocomplete>
-                <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
-            </div>
-        </div>
-        <div class="header-right-div">
-            <img class="thumb-ph" src="../assets/logo.png" alt="">
-            <el-button class="el-button-home" type="text" @click="mine">我的</el-button>
-            <el-button class="el-button-home" type="text" @click="create">创作</el-button>
-            <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
-        </div>
-    </el-header>
+<template>
+<search-header>
     <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="7%" >
+        <el-aside width="7%">
             <!-- 侧边细分菜单 -->
             <div class="nav-rail">....</div>
             <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds">
@@ -77,7 +50,7 @@
                     <el-image class="main-img" :src="require('../assets/HomeImg/DMICROpic2.png')"></el-image>
                 </div>
                 <!-- 第二块热点区域 -->
-                <div class="title-div"   >
+                <div class="title-div">
                     <div style="
                 width: 25%;
                 margin-left: px;
@@ -119,9 +92,9 @@
                         </a>
                         <div style="margin-left: 1px; margin-top: 1%; display: flex;">
                             <div class="left-div">
-                                <el-image class="small-img" :src="require('../assets/HomeImg/eg_thumb.jpg')"></el-image>
+                                <el-image class="small-img" :src="item.artUrl"></el-image>
                             </div>
-                            <div class="right-div" >
+                            <div class="right-div">
                                 <div class="title-bottom-div">
                                     <a href="javascript:void(0)" @click="tapToArticle(item.artTitle)">
                                         <span>{{item.artTitle}}</span>
@@ -139,95 +112,39 @@
             </div>
         </el-main>
     </el-container>
-</el-container>
+</search-header>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            url: "http://localhost:7070/article/",
+            urlArt: "http://localhost:7070/article/",
             openeds: ["2"],
             uniqueOpened: false,
             activeIndex: "手机",
-            queryString: "",
+            queryString :"",
             page: 1,
             pageSize: 5,
-            suggestions: [],
-            articleList:[],
-            hotArticleList:[],
-            newArticleList:[],
-            token:window.sessionStorage.getItem('token'),
+            articleList: [],
+            hotArticleList: [],
+            newArticleList: [],
+            token: window.sessionStorage.getItem('token')
         };
     },
-    
-    created(){
+
+    created() {
         this.getArticleList();
         this.getNewArticleList();
         this.getHotArticleList();
     },
     methods: {
-        logout() {
-            window.sessionStorage.clear();
-            this.$router.push("/login");
-        },
         handleSelect(key, keyPath) {
             this.activeIndex = key;
             this.getArticleList();
         },
-        searchArticle: function () {
-            var searchJson = {
-                "key": this.queryString,
-                "page": this.page,
-                "pageSize": this.pageSize,
-            }
-            this.axios({
-                    url: this.url + 'search',
-                    method: 'post',
-                    data: searchJson, //这里json对象会转换成json格式字符串发送
-                    header: {
-                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
-                    }
-                })
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-                this.$router.push({
-                    path:'/search-info',
-                    query:{
-                        res:this.queryString
-                    }
-                })
-           window.sessionStorage.setItem("token", this.token);
-        },
-        // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
-        getSuggest(queryString, callback) {
-            var list = [];
-            //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" + queryString;
-            //从后台获取到对象数组
-            this.axios.get(url).then((res) => {
-                //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
-                console.log(res)
-                for (let i = 0; i < res.data.length; i++) {
-                    console.log({
-                        "value": res.data[i]
-                    })
-                    list.push({
-                        "value": res.data[i]
-                    });
-                }
-                console.log(list)
-                callback(list);
-            }).catch((error) => {
-                console.log(error);
-            });
-        },
         //获取文章列表
-        getArticleList:function(){
+        getArticleList: function () {
             console.log(this.activeIndex)
             var getArtListJson = {
                 "type": this.activeIndex,
@@ -236,7 +153,7 @@ export default {
             }
 
             this.axios({
-                    url: this.url + 'select-es',
+                    url: this.urlArt + 'select-es',
                     method: 'post',
                     data: getArtListJson, //这里json对象会转换成json格式字符串发送
                     header: {
@@ -252,9 +169,9 @@ export default {
                 })
         },
         //获取最新文章
-        getNewArticleList(){
+        getNewArticleList() {
             //调用的后台接口
-            let url = this.url + "new-article";
+            let url = this.urlArt + "new-article";
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 // console.log(res.data)
@@ -264,9 +181,11 @@ export default {
             });
         },
         //获取Hot Top5
-        getHotArticleList(){
+        getHotArticleList() {
             //调用的后台接口
-            let url = this.url + "hot-article" ;
+            let url = this.urlArt
+            
+             + "hot-article";
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 // console.log(res.data.data)
@@ -275,70 +194,28 @@ export default {
                 console.log(error);
             });
         },
-        tapToArticle(param){
-           this.$router.push({
-               path:'/article-all',
-               query:{
-                   artTitle:param
-               }
-           })
-           window.sessionStorage.setItem("token", this.token);
-        },
-        mine() {
+        tapToArticle(param) {
+            this.$router.push({
+                path: '/article-all',
+                query: {
+                    artTitle: param
+                }
+            })
             window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/mine");
         },
-        create() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/create");
-        },
-        shop() {
-        },
-        community() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/commity");
-        },
-        home() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/home");
-        }
     },
-    
+
 };
 </script>
 
 <style scoped>
-.home-container {
-    height: 100%;
-}
-
-.el-header {
-    display: flex;
-    /* 左右对齐 */
-    justify-content: space-between;
-    padding-left: 0;
-    align-items: center;
-}
-
-.header-first-div {
-    display: flex;
-}
-
-.el-button-home {
-    color: black;
-}
-
 .thumb-ph {
     margin-top: 5px;
     width: 25px;
-    height:25px;
-    border-radius: 10px ;
-    border: grey  0.1px;
+    height: 25px;
+    border-radius: 10px;
+    border: grey 0.1px;
     margin-right: 20px;
-}
-
-.header-right-div {
-    display: flex;
 }
 
 .el-aside .el-menu {
@@ -351,35 +228,6 @@ export default {
     line-height: 24px;
     text-align: center;
     letter-spacing: 0.3em;
-}
-
-.header-first-div {
-    display: flex;
-}
-
-.search-div {
-    margin-top: 15px;
-    width: 70%;
-    display: flex;
-
-}
-
-.search-div div {
-    width: 80%;
-    text-align: center;
-    margin-left: 10%;
-}
-
-.el-header div {
-    display: flex;
-}
-
-.left-icon {
-    align-items: center;
-}
-
-.left-but {
-    padding-left: 20%;
 }
 
 .main-img {
@@ -435,7 +283,6 @@ export default {
     background-color: #ccc;
 }
 
-
 a {
     text-decoration: none;
     text-decoration: none;
@@ -486,11 +333,11 @@ a {
     height: 56%;
 }
 
-#building{
-    background:url("../assets/background.jpg");
-    width:100%;
-    height:100%;
-    position:fixed;
-    background-size:100% 100%;
+#building {
+    background: url("../assets/background.jpg");
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-size: 100% 100%;
 }
 </style>

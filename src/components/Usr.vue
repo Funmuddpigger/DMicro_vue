@@ -1,38 +1,11 @@
 <template>
-<el-container class="home-container">
-    <!-- 头部区域 -->
-    <el-header style="box-shadow:0 0 10px #e0e0eb;padding-bottom:10px;">
-        <div class="header-first-div">
-            <div>
-                <span class="left-icon">DMicro</span>
-            </div>
-            <div class="left-but">
-                <el-button class="el-button-home" type="text" @click="home">首页</el-button>
-                <el-button class="el-button-home" type="text" @shop="mine">商城</el-button>
-                <el-button class="el-button-home" type="text" @community="create">社区</el-button>
-            </div>
-        </div>
-        <!-- 搜索栏 -->
-        <div class="search-div">
-            <div>
-                <el-autocomplete style="font-size:15px;" :trigger-on-focus="false" :fetch-suggestions="getSuggest" v-model="queryString" @select="queryString" placeholder="请输入内容">
-                </el-autocomplete>
-                <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
-            </div>
-        </div>
-        <div class="header-right-div">
-            <img class="thumb-ph" src="../assets/logo.png" alt="">
-            <el-button class="el-button-home" type="text" @click="mine">我的</el-button>
-            <el-button class="el-button-home" type="text" @click="create">创作</el-button>
-            <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
-        </div>
-    </el-header>
-    <el-main>
+<search-header>
+        <el-main>
         <!-- 头部资料卡片 -->
         <div class="top-header">
             <!-- 头部本人主页标识 -->
             <div class="big-thumb-img">
-                <img shape="square" :size="50" src="../assets/logo.png">
+                <img shape="square" :size="50" :src="usrData.usrText">
             </div>
             <!-- 基本人物资料 -->
             <div class="title-span-div">
@@ -82,7 +55,7 @@
             </div>
         </div>
     </el-main>
-</el-container>
+</search-header>
 </template>
 
 <script>
@@ -110,53 +83,6 @@ export default {
         this.getArticleByUsr()
     },
     methods: {
-        searchArticle: function () {
-            var searchJson = {
-                "key": this.queryString,
-                "page": this.page,
-                "pageSize": this.pageSize,
-            }
-            this.axios({
-                    url: this.urlArt + 'search',
-                    method: 'post',
-                    data: searchJson, //这里json对象会转换成json格式字符串发送
-                    headers: {
-                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
-                    }
-                })
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/search-info");
-        },
-        // 当需要用this指向外部函数的时候,需要用箭头函数或者用别的变量替代只想外部的this,当在then内用this,this指向HTTP request event,已经不是外部默认的vue对象了   
-        getSuggest(queryString, callback) {
-            var list = [];
-            //调用的后台接口
-            let url = this.urlArt + "suggest?suggestKey=" + queryString;
-            //从后台获取到对象数组
-            this.axios.get(url).then((res) => {
-                //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示
-                console.log(res)
-                for (let i = 0; i < res.data.length; i++) {
-                    console.log({
-                        "value": res.data[i]
-                    })
-                    list.push({
-                        "value": res.data[i]
-                    });
-
-                }
-                console.log(list)
-                callback(list);
-            }).catch((error) => {
-                console.log(error);
-            });
-        },
         getArticleByUsr(){
            this.usrId = this.$route.query.usrId;
            var searchJson = {
@@ -186,7 +112,6 @@ export default {
                     this.fansList = res.data.mapData.fans
                     this.isFollowed = res.data.mapData.isFollowed
                     this.fansNum = res.data.mapData.fansNum 
-
                    }
                 })
                 .catch(err => {
@@ -200,30 +125,6 @@ export default {
         handleDelete(index, row) {
         console.log(index, row);
         },
-        logout() {
-            window.sessionStorage.clear();
-            this.$router.push("/login");
-        },
-        mine() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/mine");
-        },
-        create() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/create");
-        },
-        shop() {
-
-        },
-        community() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/commity");
-        },
-        home() {
-            window.sessionStorage.setItem("token", this.token);
-            this.$router.push("/home");
-        },
-
         follow(param){
             var json = {
                 "usrId":param
