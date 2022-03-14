@@ -1,17 +1,17 @@
 <template>
 <search-header>
     <!-- 文章搜索区--左 -->
-    <div style="display:flex;margin-left:10%;">
+    <div style="display:flex;margin-left:6%;">
         <div style="display:block;margin-top:2%;">
             <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
                 <a style="margin-left: 5px; color:black;font-size: 20px;">
-                    <span>{{item.artTitle}}</span>
+                    <span v-html="item.artTitle"></span>
                 </a>
                 <div style="margin-left: 1%; margin-top: 1%; display: flex;">
                     <div class="right-div">
                         <div class="title-bottom-div">
                             <a href="javascript:void(0)" @click="tapToArticle(item.artTitle)">
-                                <span>{{item.artSummary}}</span>
+                                <span v-html="item.artSummary"></span>
                             </a>
                         </div>
                         <div class="like-div">
@@ -116,6 +116,9 @@ export default {
             window.sessionStorage.setItem("token", this.token);
         },
         tapToArticle(param) {
+            param = param.replace("<em style='color:red;'>","");
+            param = param.replace("</em>","");
+            console.log(param)
             this.$router.push({
                 path: '/article-all',
                 query: {

@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="header-right-div">
-            <img class="thumb-ph" src="../assets/logo.png" alt="">
+            <img class="thumb-ph" :src="userInfo.usrText" alt="">
             <el-button class="el-button-home" type="text" @click="mine">我的</el-button>
             <el-button class="el-button-home" type="text" @click="create">创作</el-button>
             <el-button class="el-button-home" type="text" @click="logout">注销</el-button>
@@ -43,9 +43,30 @@ export default {
             pageSize: 5,
             suggestions: [],
             token:window.sessionStorage.getItem('token'),
+            userInfo:"",
         };
     },
+    created(){
+        this.getUser()
+    },
     methods: {
+        getUser(){
+            this.axios({
+                    url: this.urlUsr + 'if-auth',
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                        'token':window.sessionStorage.getItem('token')
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                    this.userInfo = res.data.oneData
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         logout() {
             window.sessionStorage.clear();
             this.$router.push("/login");
