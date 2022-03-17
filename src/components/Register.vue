@@ -69,6 +69,7 @@ export default {
         };
         return {
             imageUrl: '',
+            trueUrl:'',
             url: 'localhost:5050/user/',
             ruleForm: {
                 pass: '',
@@ -120,14 +121,18 @@ export default {
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-        handleAvatarSuccess(res, file) {
-            let resData = ImageUtils.handleAvatarSuccess(res, file);
-            console.log(resData)
+         handleAvatarSuccess(res, file) {
+            this.imageUrl = URL.createObjectURL(file.raw);
+            this.trueUrl = res.oneData
         },
         beforeAvatarUpload(file) {
-            ImageUtils.beforeAvatarUpload(file);
-            console.log(0)
-        }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isLt2M;
+        },  
+
     },
 
 }

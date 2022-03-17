@@ -50,12 +50,13 @@
 export default {
     data() {
         return {
+            usrInfo: '',
             artTitle: '',
             artText: '',
             artType: '',
-            artSummary:'',
+            artSummary: '',
             token: window.sessionStorage.getItem('token'),
-            usrId:'1',
+            usrId: '1',
             url: "http://localhost:7070/article/",
             options: [{
                 label: '日常',
@@ -129,8 +130,8 @@ export default {
                     method: 'post',
                     data: insertJson, //这里json对象会转换成json格式字符串发送
                     headers: {
-                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
-                        'token':window.sessionStorage.getItem('token')
+                        'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                        'token': window.sessionStorage.getItem('token')
                     }
                 })
                 .then(res => {
@@ -139,10 +140,36 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        window.sessionStorage.setItem("token",this.token);
-        this.$router.push("/article-all");
+            window.sessionStorage.setItem("token", this.token);
+            setTimeout(() => {
+                this.$router.push({
+                    path: '/article-all',
+                    query: {
+                        artTitle: this.artTitle
+                    }
+                });
+                //延迟时间：5秒
+            }, 5000)
+
         }
-        
+
+    },
+    getUser() {
+        this.axios({
+                url: this.urlUsr + 'if-auth',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                    'token': window.sessionStorage.getItem('token')
+                }
+            })
+            .then(res => {
+                console.log(res)
+                this.userInfo = res.data.oneData
+            })
+            .catch(err => {
+                console.log(err)
+            })
     },
     save() {
 

@@ -101,6 +101,8 @@ export default {
                 })
                 .then(res => {
                     console.log(res.data)
+                    this.tableData = [],
+                    this.like = 0;
                     this.usrData = res.data.oneData
                     this.total = res.data.total
                    for (let i = 0; i < res.data.data.length; i++) {
@@ -141,15 +143,24 @@ export default {
                 })
                 .then(res => {
                     this.isFollowed = res.data.oneData
+                    this.getArticleByUsr()
                     console.log(this.isFollowed)
                     console.log(res.data)
                 })
                 .catch(err => {
                     console.log(err)
                 })
+            this.$router.push({
+               path:'/usr',
+               query:{
+                   usrId:param
+               }
+           })
+           window.sessionStorage.setItem("token", this.token);
         },
         getParams(){
             this.usrId = this.$route.query.usrId;
+            console.log(this.usrId)
         },
         tapToUsr(param){
                 this.$router.push({

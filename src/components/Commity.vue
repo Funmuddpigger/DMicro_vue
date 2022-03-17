@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="header-right-div">
-            <img class="thumb-ph" src="../assets/logo.png" alt="">
+            <img class="thumb-ph" :src="usrInfo.usrText" alt="">
             <el-button class="el-button-home" type="text" @click="mine">{{usrInfo.usrNickname}}</el-button>
         </div>
     </el-header>
@@ -43,7 +43,7 @@
             <div class="post">
                 <div style="width:10%;margin-left:5%;margin-top:3%;">
                     <div>
-                        <img class="thumb-ph" style="width: 50px;height:50px;border-radius: 25px;" src="../assets/logo.png" alt="">
+                        <img class="thumb-ph" style="width: 50px;height:50px;border-radius: 25px;" :src="usrInfo.usrText" alt="">
                     </div>
                     <div>
                         <span>{{usrInfo.usrNickname}}</span>
@@ -68,7 +68,7 @@
             <div class="show" v-for="(item,index) in topUsrPostList " :key="index">
                 <div class="show-div">
                     <div>
-                        <img class="thumb-ph" style="width: 50px;height:50px;border-radius: 25px;margin-top:15%;margin-left:20%;border: 1px solid gainsboro;" src="../assets/logo.png" alt="">
+                        <img class="thumb-ph" style="width: 50px;height:50px;border-radius: 25px;margin-top:15%;margin-left:20%;border: 1px solid gainsboro;" :src="item.usrInfo.usrText" alt="">
                     </div>
                     <div style="margin:1% 1% 1% 1%;">
                         <div>
@@ -96,6 +96,7 @@
 export default {
     data() {
         return {
+            loginInfo:'',
             topicList: [],
             textarea: '',
             url: "http://localhost:7070/article/",
@@ -257,8 +258,8 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res)
                     this.usrInfo = res.data.oneData
+                    console.log(this.usrInfo)
                 })
                 .catch(err => {
                     console.log(err)

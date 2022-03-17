@@ -41,17 +41,17 @@
                     <div style="display:flex;border-bottom: #f0f5f5 solid 1px;" v-for="(item,index) in commentList" :key=index>
                         <div style="width:7%;">
                             <a href="">
-                                <img class="thumb-ph" src="../assets/logo.png" alt="">
+                                <img class="thumb-ph" :src="item.usr.usrText" alt="">
                             </a>
                         </div>
                         <div style="width:20%;margin-top:10px;font-size:10px;">
-                             <span > {{item.usrId}}</span>
+                             <span > {{item.usr.usrNickname}}</span>
                         </div>
                         <div>
                             <span style="font-size:10px;color:grey;">
-                                {{item.comText}}
+                                {{item.comment.comText}}
                             </span>
-                            <el-button type="text" icon="el-icon-caret-top"  style="padding-left:5px;color:rgb(172, 172, 166);font-size:10px;">==点赞{{item.comLike}}</el-button>
+                            <el-button type="text" icon="el-icon-caret-top"  style="padding-left:5px;color:rgb(172, 172, 166);font-size:10px;">==点赞{{item.comment.comLike}}</el-button>
                             <el-button type="text" icon="" style="padding-left:5px;color:rgb(172, 172, 166);font-size:10px;">删除</el-button>
                         </div>
                     </div>
@@ -113,14 +113,14 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res.data)
                     this.artText = res.data.oneData.artText,
                     this.artType = res.data.oneData.artType,
                     this.artRead = res.data.oneData.artRead,
                     this.artLike = res.data.oneData.artLike,
                     this.usrId = res.data.oneData.usrId,
                     this.commentList = res.data.data,
-                    this.isLike = res.data.mapData.isLike
+                    this.isLike = res.data.mapData.isLike,
+                    console.log(this.commentList)
                     this.getUsrInfo(this.usrId)
                 })
                 .catch(err => {
