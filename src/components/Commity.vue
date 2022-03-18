@@ -99,9 +99,9 @@ export default {
             loginInfo:'',
             topicList: [],
             textarea: '',
-            url: "http://localhost:7070/article/",
-            urlTop: "http://localhost:10010/topic/",
-            urlUsr: "http://localhost:5050/user/",
+            url: "http://localhost:21000/article/",
+            urlTop: "http://localhost:21000/topic/",
+            urlUsr: "http://localhost:21000/user/",
             page: 1,
             pageSize: 10,
             suggestions: [],
@@ -240,6 +240,7 @@ export default {
                     }
                 })
                 .then(res => {
+                    this.searchTopicList();
                     console.log(res)
                     
                 })
