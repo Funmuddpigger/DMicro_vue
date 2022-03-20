@@ -19,7 +19,7 @@ Vue.use(VueAxios, axios)
 	
 
 //配置请求的根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8080/'
+axios.defaults.baseURL = 'http://8.130.16.197:21000/'
 // 可以通过 this.访问到prototype的$http
 //Vue.prototype.$http = axios
 
