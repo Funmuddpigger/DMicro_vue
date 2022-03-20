@@ -64,7 +64,7 @@ export default {
     data() {
         return {
             queryString :"",
-            urlArt: "http://localhost:7070/article/",
+            urlArt: "http://8.130.16.197:21000/article/",
             queryString: "",
             page: 1,
             pageSize: 10,

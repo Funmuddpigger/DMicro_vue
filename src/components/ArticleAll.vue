@@ -80,8 +80,8 @@
 export default {
     data() {
             return {
-                urlArt: "http://localhost:7070/article/",
-                urlUsr: "http://localhost:5050/user/",
+                urlArt: "http://8.130.16.197:21000/article/",
+                urlUsr: "http://8.130.16.197:21000/user/",
                 score: null,
                 colors: { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' },
                 artTitle:"",

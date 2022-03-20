@@ -99,9 +99,9 @@ export default {
             loginInfo:'',
             topicList: [],
             textarea: '',
-            url: "http://localhost:21000/article/",
-            urlTop: "http://localhost:21000/topic/",
-            urlUsr: "http://localhost:21000/user/",
+            url: "http://8.130.16.197:21000/article/",
+            urlTop: "http://8.130.16.197:21000/topic/",
+            urlUsr: "http://8.130.16.197:21000/user/",
             page: 1,
             pageSize: 10,
             suggestions: [],
@@ -162,7 +162,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res)
+                    console.log(res.data.data)
                     this.topUsrPostList = res.data.data
                 })
                 .catch(err => {

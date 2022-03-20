@@ -53,7 +53,7 @@ export default {
            this.$refs.loginFormRef.validate(async valid => {
                if(!valid) return;
                //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
-               const res = await this.axios.post("user/login",this.loginForm);
+               const res = await this.axios.post("http://8.130.16.197:21000/user/login",this.loginForm);
                console.log(res)
                //判断登录状态码
                if(res.data.code != 200 ) return this.$message.error(res.data.msg);

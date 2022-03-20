@@ -1,6 +1,6 @@
 <template>
 <div class="outside-div">
-    <el-upload class="avatar-uploader" action="http://localhost:5050/user/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+    <el-upload class="avatar-uploader" action="http://8.130.16.197:21000/user/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
@@ -70,7 +70,7 @@ export default {
         return {
             imageUrl: '',
             trueUrl:'',
-            url: 'localhost:5050/user/',
+            url: '8.130.16.197:5050/user/',
             ruleForm: {
                 pass: '',
                 checkPass: '',
@@ -109,7 +109,7 @@ export default {
             this.$refs[formName].validate(async valid => {
                 if (!valid) return;
                 //由于返回的是一个promise请求,里面有些数据不是服务器返回的数据,而只有data才是服务器返回的,所以我们把data解构复制出来,重命名为res
-                const res = await this.axios.post('http://localhost:5050/user/insert', insertJson);
+                const res = await this.axios.post('http://8.130.16.197:5050/user/insert', insertJson);
                 console.log(res)
                 //判断登录状态码
                 if (res.data.code != 200) return this.$message.error("register fail");

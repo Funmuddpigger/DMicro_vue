@@ -119,7 +119,7 @@
 export default {
     data() {
         return {
-            urlArt: "http://localhost:7070/article/",
+            urlArt: "http://8.130.16.197:7070/article/",
             openeds: ["2"],
             uniqueOpened: false,
             activeIndex: "手机",
@@ -145,7 +145,6 @@ export default {
         },
         //获取文章列表
         getArticleList: function () {
-            console.log(this.activeIndex)
             var getArtListJson = {
                 "type": this.activeIndex,
                 "page": this.page,

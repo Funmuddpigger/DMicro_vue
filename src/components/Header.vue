@@ -36,8 +36,8 @@
 export default {
     data() {
         return {
-            urlArt: "http://localhost:21000/article/",
-            urlUsr: "http://localhost:21000/user/",
+            urlArt: "http://8.130.16.197:21000/article/",
+            urlUsr: "http://8.130.16.197:21000/user/",
             queryString: "",
             page: 1,
             pageSize: 5,

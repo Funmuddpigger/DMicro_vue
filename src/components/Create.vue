@@ -57,7 +57,7 @@ export default {
             artSummary: '',
             token: window.sessionStorage.getItem('token'),
             usrId: '1',
-            url: "http://localhost:7070/article/",
+            url: "http://8.130.16.197:21000/article/",
             options: [{
                 label: '日常',
                 options: [{
