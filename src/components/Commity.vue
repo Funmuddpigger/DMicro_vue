@@ -111,6 +111,8 @@ export default {
             queryTopicSuggest:"",
             topUsrPostList:[],
             usrInfo:"",
+            selectKey:"",
+
         }
     },
     created() {
@@ -121,7 +123,8 @@ export default {
 
     methods: {
         handleSelect(key, keyPath) {
-            this.post(key)
+            this.selectKey = key.id;
+            console.log(this.selectKey)
         },
         searchArticle: function () {
             var searchJson = {
@@ -218,12 +221,9 @@ export default {
             window.sessionStorage.setItem("token", this.token);
             this.$router.push("/home");
         },
-        post(key){
-            if(key.id !=null && key.id != undefined){
-               var topicId =  key.id
-            }else{
-                console.log(this.queryTopicSuggest)
-            }
+        post(){
+            var topicId =  this.selectKey
+            console.log(topicId)
             let url = this.urlTop + "post";
             var json = {
                 "topicId":topicId,
