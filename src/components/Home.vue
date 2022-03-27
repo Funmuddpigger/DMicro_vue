@@ -60,7 +60,7 @@
                         <el-image class="small-img" :src="require('../assets/HomeImg/DSmallPic.png')"></el-image>
                     </div>
                     <div style="width: 30%; margin-left: 4%">
-                        <span style="font-size: 20px; font-weight: bolder">热点资讯</span>
+                        <span style="font-size: 20px; font-weight: bolder">热点DIY资讯</span>
                         <div v-for="(item,index) in hotArticleList" :key="index">
                             <div class="hot-art-div">
                                 <a href="javascript:void(0)" @click="tapToArticle(item)" style="color: black">{{item}}</a>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div style="width: 30%; margin-left: 4%">
-                        <span style="font-size: 20px; font-weight: bolder">新发文章</span>
+                        <span style="font-size: 20px; font-weight: bolder">新发DIY文章</span>
                         <div v-for="(item,index) in newArticleList" :key="index">
                             <div class="hot-art-div">
                                 <a href="javascript:void(0)" @click="tapToArticle(item)" style="color: black">{{item}}</a>
@@ -80,10 +80,10 @@
                 <div class="title-div" style="display: block">
                     <div style="width: 93%">
                         <el-menu :default-active="activeIndex" class="el-select-low" mode="horizontal" @select="handleSelect">
-                            <el-menu-item index="手机">手机通讯</el-menu-item>
-                            <el-menu-item index="资讯">电脑资讯</el-menu-item>
-                            <el-menu-item index="测评">专人看法</el-menu-item>
-                            <el-menu-item index="科技">强力辅助</el-menu-item>
+                            <el-menu-item index="手机">DIY电脑资讯</el-menu-item>
+                            <el-menu-item index="资讯">DIY配件测评</el-menu-item>
+                            <el-menu-item index="测评">DIY方案介绍</el-menu-item>
+                            <el-menu-item index="科技">DIY大事件</el-menu-item>
                         </el-menu>
                     </div>
                     <div class="bottom-detail-div" v-for="(item,index) in articleList" :key="index">
@@ -332,11 +332,8 @@ a {
     height: 56%;
 }
 
-#building {
-    background: url("../assets/background.jpg");
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    background-size: 100% 100%;
+::v-deep.el-menu-item {
+    min-width:3%;
 }
+
 </style>

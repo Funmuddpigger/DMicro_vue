@@ -10,11 +10,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueAxios from "vue-axios";
 import header from './components/Header.vue'
-
+import vimg from './components/Video-card.vue'
 
 
 Vue.component('search-header', header)
- 
+Vue.component('vimg', vimg) 
+
 Vue.use(VueAxios, axios)
 	
 

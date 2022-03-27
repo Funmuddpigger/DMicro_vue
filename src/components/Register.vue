@@ -121,7 +121,7 @@ export default {
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-         handleAvatarSuccess(res, file) {
+        handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
             this.trueUrl = res.oneData
         },

@@ -9,7 +9,9 @@ import ArticleAll from '../components/ArticleAll.vue'
 import Register from '../components/Register.vue'
 import Usr from '../components/Usr.vue'
 import Commity from '../components/Commity.vue'
+import Video from '../components/Video.vue'
 import infiniteScroll from 'vue-infinite-scroll'
+import Play from '../components/PlayVideo.vue'
 
 Vue.use(infiniteScroll)
 
@@ -46,6 +48,12 @@ const routes = [
   },
   {
     path: '/commity',component: Commity
+  },
+  {
+    path: '/video',component: Video
+  },
+  {
+    path: '/play',component: Play
   }
 ]
 
@@ -60,17 +68,16 @@ router.beforeEach((to, from ,next) =>{
   //from 从哪个路径跳转过来
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
-  // //直接登录页面
-  // if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'){ return next() }
-  // //get token
-  // const tokenStr = window.sessionStorage.getItem('token')
-  // if(tokenStr == null || tokenStr == ""||tokenStr=="undefined") { 
-  //   return next('/login')
-  // }else{
-  //   next();
-  // }
+  //直接登录页面
+  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'){ return next() }
+  //get token
+  const tokenStr = window.sessionStorage.getItem('token')
+  if(tokenStr == null || tokenStr == ""||tokenStr=="undefined") { 
+    return next('/login')
+  }else{
+    next();
+  }
 
-  next();
 })
 
 export default router 

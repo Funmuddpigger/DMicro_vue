@@ -222,11 +222,9 @@ export default {
             this.$router.push("/home");
         },
         post(){
-            var topicId =  this.selectKey
-            console.log(topicId)
             let url = this.urlTop + "post";
             var json = {
-                "topicId":topicId,
+                "topicId":this.selectKey,
                 "topicUsrText":this.textarea,
                 "topicText":this.queryTopicSuggest,
             }

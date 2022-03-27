@@ -8,8 +8,8 @@
             </div>
             <div class="left-but">
                 <el-button class="el-button-home" type="text" @click="home">首页</el-button>
-                <el-button class="el-button-home" type="text" @click="shop">商城</el-button>
-                <el-button class="el-button-home" type="text" @click="community">社区</el-button>
+                <el-button class="el-button-home" type="text" @click="video">DIY视频专区</el-button>
+                <el-button class="el-button-home" type="text" @click="community">DIY电脑圈</el-button>
             </div>
         </div>
         <!-- 搜索栏 -->
@@ -130,7 +130,9 @@ export default {
             window.sessionStorage.setItem("token", this.token);
             this.$router.push("/create");
         },
-        shop() {
+        video() {
+            window.sessionStorage.setItem("token", this.token);
+            this.$router.push("/video");
         },
         community() {
             window.sessionStorage.setItem("token", this.token);
