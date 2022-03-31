@@ -1,5 +1,5 @@
 <template>
-        <div class="block" style="" @click="tapToPlay()">
+        <div class="block" style="" @click="tapToPlay(videoUrl)">
             <img class="img" :src="srcUrl" />
             <div>
               <span class="demonstration">{{text}}</span>
@@ -12,23 +12,37 @@
 export default {
     data() {
         return {
-            // 默认图片url
-            srcUrl: "",
-            text:"暂时没有标题噢",
-            date:"2022-10-15",
-            videoInfo:"",
+          token:window.sessionStorage.getItem('token'),
         }
     },
     props:{
       srcUrl:{
         type:String, //数据类型有 String、Number、Boolean、Array ...
-        default: "http://8.130.16.197:7070/images/2022-03-27/042c43c634ce45dcb2bace0284702958.png"// 默认值
-    }
+        default: "http://8.130.16.197:7070/images/2022-03-31/e7f7c88f53b940ee90cc21d31418dee3.png"// 默认值
+    },
+      text:{
+        type:String, //数据类型有 String、Number、Boolean、Array ...
+        default: "暂时没有标题噢"// 默认值
+    },
+      date:{
+        type:String, //数据类型有 String、Number、Boolean、Array ...
+        default: "2022-10-15"// 默认值
+    },
+      videoUrl:{
+        type: String, //数据类型有 String、Number、Boolean、Array ...
+        default: ""// 默认值
+    },    
 
     },
     methods:{
-      tapToPlay(){
-
+      tapToPlay(param){
+          this.$router.push({
+               path:'/play',
+               query:{
+                   videoUrl:param
+               }
+           })
+           window.sessionStorage.setItem("token", this.token);
       },
     }
 }

@@ -12,6 +12,9 @@ import Commity from '../components/Commity.vue'
 import Video from '../components/Video.vue'
 import infiniteScroll from 'vue-infinite-scroll'
 import Play from '../components/PlayVideo.vue'
+import globalVariable from '../components/GlobalVaribal'
+
+Vue.prototype.GLOBAL = globalVariable
 
 Vue.use(infiniteScroll)
 
@@ -69,7 +72,7 @@ router.beforeEach((to, from ,next) =>{
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
   //直接登录页面
-  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'){ return next() }
+  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'||to.path === '/video'){ return next() }
   //get token
   const tokenStr = window.sessionStorage.getItem('token')
   if(tokenStr == null || tokenStr == ""||tokenStr=="undefined") { 

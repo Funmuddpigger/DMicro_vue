@@ -119,7 +119,7 @@
 export default {
     data() {
         return {
-            urlArt: "http://8.130.16.197:7070/article/",
+            urlArt: this.GLOBAL.urlArt,
             openeds: ["2"],
             uniqueOpened: false,
             activeIndex: "手机",
