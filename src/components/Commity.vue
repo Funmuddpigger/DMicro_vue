@@ -99,9 +99,9 @@ export default {
             loginInfo:'',
             topicList: [],
             textarea: '',
-            url: "http://8.130.16.197:21000/article/",
-            urlTop: "http://8.130.16.197:21000/topic/",
-            urlUsr: "http://8.130.16.197:21000/user/",
+            urlArt: this.GLOBAL.urlArt,
+            urlUsr: this.GLOBAL.urlUsr,
+            urlTop: this.GLOBAL.urlTop,
             page: 1,
             pageSize: 10,
             suggestions: [],
@@ -133,7 +133,7 @@ export default {
                 "pageSize": this.pageSize,
             }
             this.axios({
-                    url: this.url + 'search',
+                    url: this.urlArt + 'search',
                     method: 'post',
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     header: {
@@ -176,7 +176,7 @@ export default {
         getSuggest(queryString, callback) {
             var list = [];
             //调用的后台接口
-            let url = this.url + "suggest?suggestKey=" + queryString;
+            let url = this.urlArt + "suggest?suggestKey=" + queryString;
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 //在这里为这个数组中每一个对象加一个value字段, 因为autocomplete只识别value字段并在下拉列中显示

@@ -10,6 +10,7 @@
                 <el-button class="el-button-home" type="text" @click="home">首页</el-button>
                 <el-button class="el-button-home" type="text" @click="video">DIY视频专区</el-button>
                 <el-button class="el-button-home" type="text" @click="community">DIY电脑圈</el-button>
+                <el-button class="el-button-home" type="text" @click="good">DIY配件库</el-button>
             </div>
         </div>
         <!-- 搜索栏 -->
@@ -137,6 +138,10 @@ export default {
         community() {
             window.sessionStorage.setItem("token", this.token);
             this.$router.push("/commity");
+        },
+        good(){
+            window.sessionStorage.setItem("token", this.token);
+            this.$router.push("/good");
         },
         home() {
             window.sessionStorage.setItem("token", this.token);

@@ -80,8 +80,8 @@
 export default {
     data() {
             return {
-                urlArt: "http://8.130.16.197:21000/article/",
-                urlUsr: "http://8.130.16.197:21000/user/",
+                urlArt: this.GLOBAL.urlArt,
+                urlUsr: this.GLOBAL.urlUsr,
                 score: null,
                 colors: { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' },
                 artTitle:"",

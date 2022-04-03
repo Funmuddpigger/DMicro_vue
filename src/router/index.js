@@ -13,6 +13,9 @@ import Video from '../components/Video.vue'
 import infiniteScroll from 'vue-infinite-scroll'
 import Play from '../components/PlayVideo.vue'
 import globalVariable from '../components/GlobalVaribal'
+import Good from '../components/Good.vue'
+import Info from '../components/Info.vue'
+import AddGood from '../components/AddGood.vue'
 
 Vue.prototype.GLOBAL = globalVariable
 
@@ -23,7 +26,7 @@ Vue.use(VueRouter)
 // 指定路由规则
 const routes = [
   {
-    path: '/',redirect: '/home'
+    path: '/',redirect: '/login'
   },
   {
     path: '/login',component: Login
@@ -57,6 +60,15 @@ const routes = [
   },
   {
     path: '/play',component: Play
+  },
+  {
+    path: '/good',component: Good
+  },
+  {
+    path: '/add-good',component: AddGood
+  },
+  {
+    path: '/info',component: Info
   }
 ]
 
@@ -72,7 +84,7 @@ router.beforeEach((to, from ,next) =>{
   //next 是一个函,表示放行 其中next() 放行  next('/login')  强制跳转
   
   //直接登录页面
-  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'||to.path === '/video'){ return next() }
+  if(to.path === '/login'|| to.path === '/register'||to.path === '/home'|| to.path === '/search-info'||to.path === '/article-all'||to.path === '/video'||to.path === '/good'||to.path === '/info'){ return next() }
   //get token
   const tokenStr = window.sessionStorage.getItem('token')
   if(tokenStr == null || tokenStr == ""||tokenStr=="undefined") { 

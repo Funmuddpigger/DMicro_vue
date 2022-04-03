@@ -64,7 +64,8 @@ export default {
     data() {
         return {
             queryString :"",
-            urlArt: "http://8.130.16.197:21000/article/",
+            urlArt: this.GLOBAL.urlArt,
+            urlUsr: this.GLOBAL.urlUsr,
             queryString: "",
             page: 1,
             pageSize: 10,

@@ -69,8 +69,9 @@ export default {
             backArtUrl:'',
             token: window.sessionStorage.getItem('token'),
             usrId: '1',
-            url: "http://8.130.16.197:21000/article/",
-            urlUsr:"http://8.130.16.197:21000/user/",
+            // url: "http://8.130.16.197:21000/article/",
+            urlArt: this.GLOBAL.urlArt,
+            urlUsr: this.GLOBAL.urlUsr,
             options: [{
                 label: '日常',
                 options: [{
@@ -140,7 +141,7 @@ export default {
                 "usrId": this.usrId,
             }
             this.axios({
-                    url: this.url + 'insert',
+                    url: this.urlArt + 'insert',
                     method: 'post',
                     data: insertJson, //这里json对象会转换成json格式字符串发送
                     headers: {
