@@ -6,7 +6,7 @@
             <el-input v-model="input" placeholder="请输入内容" maxlength="50"></el-input>
         </div>
         <div style="display:flex;">
-            <el-upload class="avatar-uploader" action="http://8.130.16.197:9090/article/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+            <el-upload class="avatar-uploader" action="http://8.130.16.197:5050/user/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
@@ -18,6 +18,7 @@
                 <el-input style="margin-top:5%;" placeholder="请输入备注" v-model="input2">
                     <template slot="prepend">备注: </template>
                 </el-input>
+                <el-button style="margin-top:5%;" @click="post()">post</el-button>
             </div>
         </div>
     </div>
@@ -65,6 +66,7 @@ export default {
         handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
             this.trueUrl = res.oneData
+            console.log(this.trueUrl)
         },
         beforeAvatarUpload(file) {
             const isLt2M = file.size / 1024 / 1024 < 2;
