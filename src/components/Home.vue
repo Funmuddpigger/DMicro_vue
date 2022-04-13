@@ -5,11 +5,15 @@
         <el-aside width="7%">
             <!-- 侧边细分菜单 -->
             <div class="nav-rail">....</div>
-            <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds">
+            <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds" @select="choose">
                 <!-- 一级菜单 -->
-                <el-menu-item index="1">
+                <el-menu-item index="资讯">
                     <i class="el-icon-menu"></i>
-                    <span slot="title">资讯</span>
+                    <span slot="title" >资讯</span>
+                </el-menu-item>
+                <el-menu-item index="测评">
+                    <i class="el-icon-s-claim"></i>
+                    <span slot="title">测评</span>
                 </el-menu-item>
                 <el-submenu index="2">
                     <!-- 一级菜单2模板区域 -->
@@ -20,24 +24,24 @@
                     <!-- 二级菜单 -->
                     <el-menu-item-group>
                         <template slot="title">主机</template>
-                        <el-menu-item index="1-1">CPU</el-menu-item>
-                        <el-menu-item index="1-2">显卡</el-menu-item>
-                        <el-menu-item index="1-3">内存</el-menu-item>
-                        <el-menu-item index="1-4">硬盘</el-menu-item>
-                        <el-menu-item index="1-5">电源</el-menu-item>
-                        <el-menu-item index="1-6">散热</el-menu-item>
+                        <el-menu-item index="CPU">CPU</el-menu-item>
+                        <el-menu-item index="显卡">显卡</el-menu-item>
+                        <el-menu-item index="内存">内存</el-menu-item>
+                        <el-menu-item index="硬盘">硬盘</el-menu-item>
+                        <el-menu-item index="电源">电源</el-menu-item>
+                        <el-menu-item index="散热">散热</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group>
                         <template slot="title">笔记本</template>
-                        <el-menu-item index="2-1">游戏本</el-menu-item>
-                        <el-menu-item index="2-2">商务本</el-menu-item>
-                        <el-menu-item index="2-3">平板</el-menu-item>
+                        <el-menu-item index="游戏本">游戏本</el-menu-item>
+                        <el-menu-item index="商务本">商务本</el-menu-item>
+                        <el-menu-item index="平板">平板</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group>
                         <template slot="title">外设</template>
-                        <el-menu-item index="3-1">键/鼠</el-menu-item>
-                        <el-menu-item index="3-2">显示器</el-menu-item>
-                        <el-menu-item index="3-3">耳机</el-menu-item>
+                        <el-menu-item index="键/鼠">键/鼠</el-menu-item>
+                        <el-menu-item index="显示器">显示器</el-menu-item>
+                        <el-menu-item index="耳机">耳机</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
             </el-menu>
@@ -123,7 +127,7 @@ export default {
             openeds: ["2"],
             uniqueOpened: false,
             activeIndex: "手机",
-            queryString :"",
+            queryString: "",
             page: 1,
             pageSize: 5,
             articleList: [],
@@ -139,6 +143,34 @@ export default {
         this.getHotArticleList();
     },
     methods: {
+        choose(key,keyPath) {
+            var searchJson = {
+                "key": key,
+                "page": this.page,
+                "pageSize": this.pageSize,
+            }
+            this.axios({
+                    url: this.urlArt + 'search',
+                    method: 'post',
+                    data: searchJson, //这里json对象会转换成json格式字符串发送
+                    header: {
+                        'Content-Type': 'application/json' //如果写成contentType会报错,如果不写这条也报错
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                this.$router.push({
+                    path:'/search-info',
+                    query:{
+                        res:this.queryString
+                    }
+                })
+           window.sessionStorage.setItem("token", this.token);
+        },
         handleSelect(key, keyPath) {
             this.activeIndex = key;
             this.getArticleList();
@@ -183,8 +215,9 @@ export default {
         getHotArticleList() {
             //调用的后台接口
             let url = this.urlArt
-            
-             + "hot-article";
+
+                +
+                "hot-article";
             //从后台获取到对象数组
             this.axios.get(url).then((res) => {
                 // console.log(res.data.data)
@@ -333,7 +366,6 @@ a {
 }
 
 ::v-deep.el-menu-item {
-    min-width:3%;
+    min-width: 3%;
 }
-
 </style>

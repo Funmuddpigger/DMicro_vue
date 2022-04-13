@@ -5,10 +5,10 @@
         <div style="width:50%;">
             <div class="block" v-for="(item,index) in goodInfo" :key="index">
                 <el-timeline>
-                    <el-timeline-item timestamp="2018/4/12" placement="top">
+                    <el-timeline-item :timestamp="item.infoTime" placement="top">
                         <el-card @click.native="check(item.infoId)" shadow="hover">
                             <h4>{{item.infoMsg}}</h4>
-                            <p>发生于 {{item.infoTime}}</p>
+                            <p>发生于 {{transformTimestamp(item.infoTime)}}</p>
                         </el-card>
                     </el-timeline-item>
                 </el-timeline>
@@ -48,9 +48,9 @@ export default {
             urlBlockChain: this.GLOBAL.urlBlockChain,
             spvInfo: '',
             checkInfo: '',
-            goodInfo:'',
-            isTrue:false,
-            spvpath:[],
+            goodInfo: '',
+            isTrue: false,
+            spvpath: [],
         }
     },
     methods: {
@@ -63,7 +63,7 @@ export default {
             this.axios.get(url).then((res) => {
                 console.log(res.data)
                 this.spvpath = res.data.data
-                
+
             }).catch((error) => {
                 console.log(error);
             });
@@ -104,10 +104,27 @@ export default {
             this.goodId = this.$route.query.goodId;
             this.getInfoWithGoodId();
         },
+        //时间转换
+        transformTimestamp(timestamp) {
+            let a = new Date(timestamp).getTime();
+            const date = new Date(a);
+            const Y = date.getFullYear() + "-";
+            const M =
+                (date.getMonth() + 1 < 10 ?
+                    "0" + (date.getMonth() + 1) :
+                    date.getMonth() + 1) + "-";
+            const D =
+                (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "  ";
+            const h =
+                (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+            const m =
+                date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            const dateString = Y + M + D + h + m;
+            return dateString;
+        },
 
     },
     created() {
-
         this.getParams();
     }
 

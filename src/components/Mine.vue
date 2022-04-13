@@ -15,7 +15,7 @@
         </div>
         <!-- 下方文章导航 -->
         <div class="card-bottom">
-                    <!-- 左侧导航卡片 -->
+            <!-- 左侧导航卡片 -->
             <div style="width:25%;padding-bottom:10px;">
                 <el-card class="box-card" shadow="hover">
                     <div slot="header" class="clearfix">
@@ -30,31 +30,27 @@
             <!-- 右侧本人文章管理 -->
             <div class="article-admin">
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column label="发布日期" width="190">
+                    <el-table-column label="发布日期" width="190" prop="artPostime">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
-                            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                            <span style="margin-left: 10px">{{ scope.row.artPostime }}</span>
                         </template>
                     </el-table-column>
-                   <el-table-column label="文章标题" width="480">
+                    <el-table-column label="文章标题" width="480" prop="artTitle">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                            <span style="margin-left: 10px">{{ scope.row.artTitle }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="修改">
                         <template slot-scope="scope">
-                            <el-button icon="el-icon-edit" style="color:grey;" size="mini" type="text"  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button icon="el-icon-edit" style="color:grey;" size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                             <el-button icon="el-icon-delete" style="color:grey;" size="mini" type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div style="margin-left:20%;">
-                    <el-pagination
-                        :page-size="10"
-                        :pager-count="11"
-                        layout="prev, pager, next"
-                        :total="10">
-                     </el-pagination>
+                    <el-pagination @current-change="handleChange" :page-size="pageSize" :pager-count="pagerCount" :current-page="currentPage" layout="prev, pager, next" :total="total">
+                    </el-pagination>
                 </div>
             </div>
         </div>
@@ -66,18 +62,20 @@
 export default {
     data() {
         return {
+            pagerCount: 5,
+            count: 1,
+            currentPage: 1,
             squareUrl: "../assets/logo.png",
             tableData: [],
-            page:"1",
-            pageSize:"10",
-            token:window.sessionStorage.getItem('token'),
-            queryString:"",
+            pageSize: 10,
+            token: window.sessionStorage.getItem('token'),
+            queryString: "",
             urlArt: this.GLOBAL.urlArt,
             urlUsr: this.GLOBAL.urlUsr,
-            usrData:"",
-            total:"",
-            like:0,
-            fansData:"",
+            usrData: "",
+            total: 1,
+            like: 0,
+            fansData: "",
 
         }
     },
@@ -85,9 +83,15 @@ export default {
         this.getArticleByUsr()
     },
     methods: {
-        getArticleByUsr(){
-           var searchJson = {
-                "page": this.page,
+        handleChange(val) {
+            console.log(val)
+            this.currentPage = val
+            this.tableData = [],
+                this.getArticleByUsr()
+        },
+        getArticleByUsr() {
+            var searchJson = {
+                "page": this.currentPage,
                 "pageSize": this.pageSize,
             }
             console.log()
@@ -95,8 +99,8 @@ export default {
                     url: this.urlArt + 'search-usr',
                     method: 'post',
                     headers: {
-                        'Content-Type': 'application/json' ,//如果写成contentType会报错,如果不写这条也报错
-                        'Token': window.sessionStorage.getItem('token')
+                        'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
+                        'token': window.sessionStorage.getItem('token')
                     },
                     data: searchJson //这里json对象会转换成json格式字符串发送
                 })
@@ -104,14 +108,7 @@ export default {
                     console.log(res.data)
                     this.usrData = res.data.oneData
                     this.total = res.data.total
-                   for (let i = 0; i < res.data.data.length; i++) {
-                    this.tableData.push({
-                        "date": res.data.data[i].artPostime,
-                        "name": res.data.data[i].artTitle,
-                    });
-                    this.like = res.data.data[i].artLike + this.like
-                    this.fansData = res.data.mapData
-                   }
+                    this.tableData=res.data.data
                 })
                 .catch(err => {
                     console.log(err)
@@ -119,10 +116,22 @@ export default {
             window.sessionStorage.setItem("token", this.token);
         },
         handleEdit(index, row) {
-        console.log(index, row);
+            console.log(row)
+            this.$router.push({
+                name: 'create',
+                params: {row}
+
+            })
+            window.sessionStorage.setItem("token", this.token);
         },
         handleDelete(index, row) {
-        console.log(index, row);
+            let url = this.urlArt + "del?artId=" + row.artId;
+            this.axios.get(url).then((res) => {
+                console.log(res)
+            }).catch((error) => {
+                console.log(error);
+            });
+            
         },
     }
 }
@@ -317,10 +326,11 @@ li {
     display: flex;
     margin-left: 14%;
     margin-top: 280px;
-    width: 72%;                                                                                                                                                          
+    width: 72%;
 
 }
-.article-admin{
+
+.article-admin {
     width: 75%;
     border: 1px solid #f0f5f5;
     margin-left: 1%;

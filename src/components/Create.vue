@@ -27,7 +27,7 @@
             </el-input>
         </div>
         <div style="margin-top:1%;display:flex;width:100%;">
-            <el-upload drag name="image" action="http://8.130.16.197:21000/article/upload"  :before-upload="beforeUpload" :on-success="upSuccess" :on-error="upError" :on-remove="upRemve" :on-change="upChange" enctype="multipart/form-data" :multiple="false">
+            <el-upload drag name="image" action="http://8.130.16.197:21000/article/upload" :before-upload="beforeUpload" :on-success="upSuccess" :on-error="upError" :on-remove="upRemve" :on-change="upChange" enctype="multipart/form-data" :multiple="false">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
                     将图片拖到此处，或<em>点击上传</em>
@@ -66,7 +66,8 @@ export default {
             artText: '',
             artType: '',
             artSummary: '',
-            backArtUrl:'',
+            backArtUrl: '',
+            artInfo: '',
             token: window.sessionStorage.getItem('token'),
             usrId: '1',
             // url: "http://8.130.16.197:21000/article/",
@@ -133,15 +134,22 @@ export default {
         post() {
             console.log(this.activeIndex)
             var insertJson = {
-                "artTitle": this.artTitle,
-                "artText": this.artText,
-                "artType": this.artType,
-                "artSummary": this.artSummary,
-                "artUrl":this.backArtUrl,
-                "usrId": this.usrId,
+                    "artTitle": this.artTitle,
+                    "artText": this.artText,
+                    "artType": this.artType,
+                    "artSummary": this.artSummary,
+                    "artUrl": this.backArtUrl,
+                    "usrId": this.usrId,
+                }
+            let url = this.urlArt + "insert"
+            if (this.$route.params.row.artId) {
+                insertJson.artId = this.$route.params.row.artId,
+                insertJson.artRead = this.$route.params.row.artRead,
+                insertJson.artLike = this.$route.params.row.artLike,
+                url = this.urlArt + "update"
             }
             this.axios({
-                    url: this.urlArt + 'insert',
+                    url: url,
                     method: 'post',
                     data: insertJson, //这里json对象会转换成json格式字符串发送
                     headers: {
@@ -155,16 +163,16 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-            window.sessionStorage.setItem("token", this.token);
-            setTimeout(() => {
-                this.$router.push({
-                    path: '/article-all',
-                    query: {
-                        artTitle: this.artTitle
-                    }
-                });
-                //延迟时间：5秒
-            }, 5000)
+        //     window.sessionStorage.setItem("token", this.token);
+        //     setTimeout(() => {
+        //         this.$router.push({
+        //             path: '/article-all',
+        //             query: {
+        //                 artTitle: this.artTitle
+        //             }
+        //         });
+        //         //延迟时间：5秒
+        //     }, 5000)
 
         },
         getUser() {
@@ -188,14 +196,14 @@ export default {
         save() {
 
         },
-                //上传之前
+        //上传之前
         beforeUpload(file) {
             const isLt2M = file.size / 1024 / 1024 < 10;
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 10MB!');
             }
             return isLt2M;
-        },  
+        },
 
         // 上传成功
         upSuccess(res) {
@@ -217,18 +225,29 @@ export default {
                 offset: 80,
             });
         },
-       //上传的文件改变时（覆盖原来的文件）
+        //上传的文件改变时（覆盖原来的文件）
         upChange(file, fileList) {
 
         },
         // 移除列表
         upRemve(file) {
             console.log("ok")
-        }
-
+        },
+        getParams() {
+            console.log(this.$route.params.row)
+            if (this.$route.params) {
+                this.artTitle = this.$route.params.row.artTitle;
+                this.artText = this.$route.params.row.artText;
+                this.artType = this.$route.params.row.artType;
+                this.artSummary = this.$route.params.row.artSummary;
+                this.backArtUrl = this.$route.params.row.artUrl;
+                this.usrId = this.$route.params.row.usrId;
+            }
+        },
     },
     created() {
         this.getUser();
+        this.getParams();
     },
 
 }

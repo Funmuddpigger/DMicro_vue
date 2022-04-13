@@ -39,11 +39,11 @@
         <el-main>
             <div class="top">
                 <div style="display:flex;margin-left:6%;">
-                    <el-upload class="upload-demo" drag action="http://8.130.16.197:21000/article/upload" name="image" :before-upload="beforeUpload" :on-success="upSuccess" :on-error="upError">
+                    <el-upload class="upload-demo" drag action="http://8.130.16.197:7070/article/upload" name="image" :before-upload="beforeUpload" :on-success="upSuccess" :on-error="upError">
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                     </el-upload>
-                    <el-upload class="avatar-uploader" action="http://8.130.16.197:21000/article/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader" action="http://8.130.16.197:7070/article/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -173,9 +173,9 @@ export default {
         },  
                 //上传之前
         beforeUpload(file) {
-            const isLt2M = file.size / 1024 / 1024 < 10;
+            const isLt2M = file.size / 1024 / 1024 < 200;
             if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 10MB!');
+                this.$message.error('上传头像图片大小不能超过 200MB!');
             }
             return isLt2M;
         },  

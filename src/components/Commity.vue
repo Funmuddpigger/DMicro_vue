@@ -87,6 +87,12 @@
         </div>
         <div class="trend">
             <div style="margin:10% 10%;">话题趋势</div>
+            <ol>
+                <ul>#显卡RTX4060</ul>
+                <ul>#显卡RTX4090</ul>
+                <ul>#显卡RTX4050</ul>
+                <ul>#显卡发售了</ul>
+            </ol>
         </div>
     </el-main>
 </el-container>

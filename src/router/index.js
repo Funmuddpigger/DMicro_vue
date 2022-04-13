@@ -29,46 +29,46 @@ const routes = [
     path: '/',redirect: '/login'
   },
   {
-    path: '/login',component: Login
+    path: '/login',name:'login',component: Login
   },
   {
-    path: '/home',component: Home
+    path: '/home',name:'home',component: Home
   },
   {
-    path: '/search-info',component: SearchInfo
+    path: '/search-info',name:'search-info',component: SearchInfo
   },
   {
-    path: '/mine',component: Mine
+    path: '/mine',name:'mine',component: Mine
   },
   {
-    path: '/create',component: Create
+    path: '/create',name:'create',component: Create
   },
   {
-    path: '/article-all',component: ArticleAll
+    path: '/article-all',name:'article-all',component: ArticleAll
   },
   {
-    path: '/register',component: Register
+    path: '/register',name:'register',component: Register
   },
   {
-    path: '/usr',component: Usr
+    path: '/usr',name:'usr',component: Usr
   },
   {
-    path: '/commity',component: Commity
+    path: '/commity',name:'commity',component: Commity
   },
   {
-    path: '/video',component: Video
+    path: '/video',name:'video',component: Video
   },
   {
-    path: '/play',component: Play
+    path: '/play',name:'play',component: Play
   },
   {
-    path: '/good',component: Good
+    path: '/good',name:'good',component: Good
   },
   {
-    path: '/add-good',component: AddGood
+    path: '/add-good',name:'add-good',component: AddGood
   },
   {
-    path: '/info',component: Info
+    path: '/info',name:'info',component: Info
   }
 ]
 
