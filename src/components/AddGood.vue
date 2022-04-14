@@ -33,8 +33,8 @@ export default {
             trueUrl: '',
             urlGood: this.GLOBAL.urlGood,
             input: '',
-            input1:'',
-            input2:'',
+            input1: '',
+            input2: '',
 
         }
     },
@@ -56,8 +56,10 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res)
+                    window.sessionStorage.setItem("token", this.token);
+                    this.$router.push("/good");
                     this.$message('发布成功')
+
                 })
                 .catch(err => {
                     console.log(err)

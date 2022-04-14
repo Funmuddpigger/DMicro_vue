@@ -221,7 +221,11 @@ export default {
                 })
                 .then(res => {
                     console.log(res)
-                    
+                    this.input='',
+                    this.trueUrl='',
+                    this.videoUrl='',
+                    this.value1='',
+                    this.value2='',    
                     this.getVideoList()
                 })
                 .catch(err => {

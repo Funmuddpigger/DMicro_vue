@@ -121,11 +121,12 @@ export default {
                     data: json, //这里json对象会转换成json格式字符串发送
                     headers: {
                         'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
-                        "token": this.token,
+                        "token":window.sessionStorage.getItem('token'),
                     }
                 })
                 .then(res => {
                     console.log(res)
+                    this.comment = '',
                     this.getParams();
                 })
                 .catch(err => {
@@ -143,7 +144,7 @@ export default {
                     data: searchJson, //这里json对象会转换成json格式字符串发送
                     headers: {
                         'Content-Type': 'application/json', //如果写成contentType会报错,如果不写这条也报错
-                        "token": this.token,
+                        "token": window.sessionStorage.getItem('token'),
                     }
                 })
                 .then(res => {

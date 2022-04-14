@@ -244,6 +244,9 @@ export default {
                     }
                 })
                 .then(res => {
+                    this.selectKey='',
+                    this.textarea='',
+                    this.queryTopicSuggest='',
                     this.searchTopicList();
                     console.log(res)
                     

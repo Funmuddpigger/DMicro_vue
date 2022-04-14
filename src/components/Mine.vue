@@ -128,6 +128,11 @@ export default {
             let url = this.urlArt + "del?artId=" + row.artId;
             this.axios.get(url).then((res) => {
                 console.log(res)
+                setTimeout(() => {
+                    this. getArticleByUsr();
+                //延迟时间：5秒
+            }, 3000)
+
             }).catch((error) => {
                 console.log(error);
             });

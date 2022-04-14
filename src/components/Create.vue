@@ -142,7 +142,7 @@ export default {
                     "usrId": this.usrId,
                 }
             let url = this.urlArt + "insert"
-            if (this.$route.params.row.artId) {
+            if (this.$route.params.row!= undefined&&this.$route.params.row.artId) {
                 insertJson.artId = this.$route.params.row.artId,
                 insertJson.artRead = this.$route.params.row.artRead,
                 insertJson.artLike = this.$route.params.row.artLike,
@@ -163,16 +163,16 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        //     window.sessionStorage.setItem("token", this.token);
-        //     setTimeout(() => {
-        //         this.$router.push({
-        //             path: '/article-all',
-        //             query: {
-        //                 artTitle: this.artTitle
-        //             }
-        //         });
-        //         //延迟时间：5秒
-        //     }, 5000)
+            window.sessionStorage.setItem("token", this.token);
+            setTimeout(() => {
+                this.$router.push({
+                    path: '/article-all',
+                    query: {
+                        artTitle: this.artTitle
+                    }
+                });
+                //延迟时间：5秒
+            }, 5000)
 
         },
         getUser() {
