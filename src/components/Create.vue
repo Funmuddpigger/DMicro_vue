@@ -11,7 +11,7 @@
         </div>
         <div style="margin-left:10px;">
             <el-button type="info" @click="save">草稿</el-button>
-            <el-button style="margin-left:10px;" @click="post">发布</el-button>
+            <el-button style="margin-left:10px;" @click="post" v-loading.fullscreen.lock ="routerLoading">发布</el-button>
         </div>
         <div>
             <a href="">
@@ -61,6 +61,7 @@
 export default {
     data() {
         return {
+            routerLoading:false,
             usrInfo: '',
             artTitle: '',
             artText: '',
@@ -133,20 +134,21 @@ export default {
     methods: {
         post() {
             console.log(this.activeIndex)
+            this.routerLoading= true
             var insertJson = {
-                    "artTitle": this.artTitle,
-                    "artText": this.artText,
-                    "artType": this.artType,
-                    "artSummary": this.artSummary,
-                    "artUrl": this.backArtUrl,
-                    "usrId": this.usrId,
-                }
+                "artTitle": this.artTitle,
+                "artText": this.artText,
+                "artType": this.artType,
+                "artSummary": this.artSummary,
+                "artUrl": this.backArtUrl,
+                "usrId": this.usrId,
+            }
             let url = this.urlArt + "insert"
-            if (this.$route.params.row!= undefined&&this.$route.params.row.artId) {
+            if (this.$route.params.row != undefined && this.$route.params.row.artId) {
                 insertJson.artId = this.$route.params.row.artId,
-                insertJson.artRead = this.$route.params.row.artRead,
-                insertJson.artLike = this.$route.params.row.artLike,
-                url = this.urlArt + "update"
+                    insertJson.artRead = this.$route.params.row.artRead,
+                    insertJson.artLike = this.$route.params.row.artLike,
+                    url = this.urlArt + "update"
             }
             this.axios({
                     url: url,
@@ -159,21 +161,22 @@ export default {
                 })
                 .then(res => {
                     this.$message('发布成功')
+                    window.sessionStorage.setItem("token", this.token);
+                    setTimeout(() => {
+                        this.$router.push({
+                            path: '/article-all',
+                            query: {
+                                artTitle: this.artTitle
+                            }
+                        });
+                        //延迟时间：5秒
+                    }, 5000)
                 })
                 .catch(err => {
+                    this.$message('发布失败')
+                    this.routerLoading= false
                     console.log(err)
                 })
-            window.sessionStorage.setItem("token", this.token);
-            setTimeout(() => {
-                this.$router.push({
-                    path: '/article-all',
-                    query: {
-                        artTitle: this.artTitle
-                    }
-                });
-                //延迟时间：5秒
-            }, 5000)
-
         },
         getUser() {
             this.axios({

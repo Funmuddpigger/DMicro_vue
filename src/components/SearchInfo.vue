@@ -17,8 +17,8 @@
                         <div class="like-div">
                             <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artLike}}</el-button>
                             <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{item.artRead}}</el-button>
-                            <el-button icon="el-icon-chat-line-square" type="text" style="margin-left:20px;color:gray;" disbaled>评论 56</el-button>
-                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者名字 {{item.usrId}}</el-button>
+                            <!-- <el-button icon="el-icon-chat-line-square" type="text" style="margin-left:20px;color:gray;" disbaled>评论 56</el-button> -->
+                            <el-button type="text" icon="el-icon-user" style="margin-left:20px;color:gray;" disabled>作者编号 {{item.usrId}}</el-button>
                             <el-button type="text" style="margin-left:20px;color:gray;" disabled>{{item.artPostime}}</el-button>
                         </div>
                     </div>
@@ -30,14 +30,14 @@
             </div>
             <!-- 翻页条 -->
             <div style="margin-left:30%;">
-                <el-pagination :page-size="10" :pager-count="11" layout="prev, pager, next" :total="total">
+                <el-pagination @current-change="handleChange" :page-size="pageSize" :pager-count="pagerCount" :current-page="currentPage" :total="total" layout="prev, pager, next">
                 </el-pagination>
             </div>
         </div>
         <!-- 右边热搜榜单区 -->
         <div class="bottom-right-hotdiv">
             <div>
-                <span style="margin-left:5%;font-size: 20px; font-weight: bolder;color:#862d2d;">热搜论坛榜</span>
+                <span style="margin-left:5%;font-size: 20px; font-weight: bolder;color:#862d2d;">热搜趋势榜</span>
                 <el-divider></el-divider>
             </div>
             <div>
@@ -63,12 +63,15 @@
 export default {
     data() {
         return {
+            pagerCount: 5,
+            count: 1,
+            currentPage: 1,
+            total: 1,
+            pageSize: 10,
             queryString :"",
             urlArt: this.GLOBAL.urlArt,
             urlUsr: this.GLOBAL.urlUsr,
             queryString: "",
-            page: 1,
-            pageSize: 10,
             suggestions: [],
             articleList: [],
             value: new Date(),
@@ -89,7 +92,7 @@ export default {
         searchArticle: function () {
             var searchJson = {
                 "key": this.queryString,
-                "page": this.page,
+                "page": this.currentPage,
                 "pageSize": this.pageSize,
             }
             this.axios({
@@ -101,8 +104,9 @@ export default {
                     }
                 })
                 .then(res => {
+                    console.log(res)
                     this.articleList = res.data.data
-                    this.total = res.data.data.total
+                    this.total = res.data.total
                 })
                 .catch(err => {
                     console.log(err)
@@ -115,6 +119,12 @@ export default {
             })
             .catch(()=>{})
             window.sessionStorage.setItem("token", this.token);
+        },
+         handleChange(val) {
+            console.log(val)
+            this.currentPage = val
+            this.articleList = [],
+            this.searchArticle()
         },
         tapToArticle(param) {
             param = param.replace("<em style='color:red;'>","");

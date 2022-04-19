@@ -4,11 +4,11 @@
         <!-- 侧边栏 -->
         <el-aside width="10%">
             <!-- 侧边细分菜单 -->
-            <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds">
+            <el-menu background-color="#fff" text-color="#666" :default-openeds="openeds" @select="handleSelect">
                 <!-- 一级菜单 -->
-                <el-menu-item index="1">
+                <el-menu-item index="">
                     <i class="el-icon-menu"></i>
-                    <span slot="title">资讯</span>
+                    <span slot="title">全部</span>
                 </el-menu-item>
                 <el-submenu index="2">
                     <!-- 一级菜单2模板区域 -->
@@ -18,7 +18,7 @@
                     </template>
                     <!-- 二级菜单 -->
                     <el-menu-item-group>
-                        <template slot="title">DIY专区</template>
+                        <template slot="title" >DIY专区</template>
                         <el-menu-item index="教学">视频教学</el-menu-item>
                         <el-menu-item index="分析">硬件分析</el-menu-item>
                         <el-menu-item index="拆解">新品拆解</el-menu-item>
@@ -41,7 +41,7 @@
                 <div style="display:flex;margin-left:6%;">
                     <el-upload class="upload-demo" drag action="http://8.130.16.197:7070/article/upload" name="image" :before-upload="beforeUpload" :on-success="upSuccess" :on-error="upError">
                         <i class="el-icon-upload"></i>
-                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        <div class="el-upload__text">将视频(*.MP4)拖到此处，或<em>点击上传</em></div>
                     </el-upload>
                     <el-upload class="avatar-uploader" action="http://8.130.16.197:7070/article/upload" name="image" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -134,15 +134,19 @@ export default {
             trueUrl:'',
             videoUrl:'',
             imageUrl:'',
+            selectKey:'',
             token:window.sessionStorage.getItem('token'),
         }
 
     },
     methods: {
+        handleSelect(key, keyPath) {
+            this.selectKey=key
+            this.getVideoList()
+        },
         getVideoList() {
             var searchJson = {
-                "videoType": this.value1,
-                "videoType2": this.value2
+                "videoType2": this.selectKey
             }
             this.axios({
                     url: this.urlArt + 'video-select',
@@ -225,7 +229,8 @@ export default {
                     this.trueUrl='',
                     this.videoUrl='',
                     this.value1='',
-                    this.value2='',    
+                    this.value2='',   
+                    this.imageUrl='', 
                     this.getVideoList()
                 })
                 .catch(err => {

@@ -49,7 +49,7 @@
                     </el-table-column>
                 </el-table>
                 <div style="margin-left:20%;">
-                    <el-pagination @current-change="handleChange" :page-size="pageSize" :pager-count="pagerCount" :current-page="currentPage" layout="prev, pager, next" :total="total">
+                    <el-pagination @current-change="handleChange" :page-size="pageSize" :pager-count="pagerCount" :current-page="currentPage" :total="total" layout="prev, pager, next" >
                     </el-pagination>
                 </div>
             </div>

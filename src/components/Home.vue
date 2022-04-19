@@ -107,7 +107,7 @@
                                 <div class="like-div">
                                     <el-button type="text" style="color:gray;" icon="el-icon-caret-top">赞 {{item.artLike}}</el-button>
                                     <el-button icon="el-icon-view" type="text" style="margin-left:20px;color:gray;" disbaled>阅读量 {{item.artRead}}</el-button>
-                                    <span style="margin-left:20px;color:gray;">作者 is</span>
+                                    <span style="margin-left:20px;color:gray;">作者编号 {{item.usrId}}</span>
                                 </div>
                             </div>
                         </div>

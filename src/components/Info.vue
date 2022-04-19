@@ -3,9 +3,16 @@
     <div style="display:flex;margin-top:2%;">
         <!-- 左边步骤信息条 -->
         <div style="width:50%;">
-            <div class="block" v-for="(item,index) in goodInfo" :key="index">
-                <el-timeline>
-                    <el-timeline-item :timestamp="item.infoTime" placement="top">
+            <div style="margin:0 0 2% 5%;" class="radio">
+                排序：
+                <el-radio-group v-model="reverse">
+                    <el-radio :label="true">倒序</el-radio>
+                    <el-radio :label="false">正序</el-radio>
+                </el-radio-group>
+            </div>
+            <div class="block">
+                <el-timeline :reverse="reverse">
+                    <el-timeline-item :timestamp="transformTimestamp(item.infoTime)" placement="top" v-for="(item,index) in goodInfo" :key="index">
                         <el-card @click.native="check(item.infoId)" shadow="hover">
                             <h4>{{item.infoMsg}}</h4>
                             <p>发生于 {{transformTimestamp(item.infoTime)}}</p>
@@ -17,10 +24,10 @@
         <!-- 右边数据比对区 -->
         <div style="width: 35%;margin-left:5%;margin-top:3%;">
             <!-- 信息输入 -->
-            <div>
+            <!-- <div>
                 <el-input type="text" placeholder="请输入信息" maxlength="255"></el-input>
 
-            </div>
+            </div> -->
             <!-- 信息结果回显 -->
             <div style="margin-top:3%;">
                 <h1>信息验证结果:</h1>
@@ -41,8 +48,9 @@
 
 <script>
 export default {
-    data() {
+    data() {    
         return {
+            reverse: true,
             goodId: '',
             urlGood: this.GLOBAL.urlGood,
             urlBlockChain: this.GLOBAL.urlBlockChain,

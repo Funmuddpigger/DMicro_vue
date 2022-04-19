@@ -14,7 +14,8 @@
             <div style="">
                 <span style="font-size:15px;border-bottom:1px solid ;">
                     今日最热文章:
-                    <el-button icon="el-icon-magic-stick" style="font-size:10px;color:red;margin-left:10px;" type="text">GTX 1050TI爆炸</el-button></span>
+                    <el-button icon="el-icon-magic-stick" style="font-size:10px;color:red;margin-left:10px;" type="text" @click="tapToArticle(text)">iGame GeForce RTX 3050 Ultra W OC 1美观</el-button>
+                </span>
             </div>
             <div style="width:100%;">
                 <el-autocomplete style="font-size:13px;" :trigger-on-focus="false" :fetch-suggestions="getSuggest" v-model="queryString" @select="searchArticle" placeholder="搜索话题">
@@ -59,7 +60,7 @@
                                 <el-autocomplete style="width:90%;" class="inline-input" v-model="queryTopicSuggest" :fetch-suggestions="getSuggestTop" placeholder="@要吐槽的话题" :trigger-on-focus="false" @select="handleSelect"></el-autocomplete>
                         </div>
                         <div style="margin-left:10%;">
-                            <el-button type="info" icon="el-icon-s-promotion" @click="post">发布</el-button>
+                            <el-button type="info" icon="el-icon-s-promotion" @click="post" >发布</el-button>
                         </div>
                     </div>
                 </div>
@@ -102,6 +103,7 @@
 export default {
     data() {
         return {
+            text:"iGame GeForce RTX 3050 Ultra W OC 1美观",
             loginInfo:'',
             topicList: [],
             textarea: '',
@@ -228,6 +230,7 @@ export default {
             this.$router.push("/home");
         },
         post(){
+            this.routerLoading=true
             let url = this.urlTop + "post";
             var json = {
                 "topicId":this.selectKey,
@@ -248,10 +251,12 @@ export default {
                     this.textarea='',
                     this.queryTopicSuggest='',
                     this.searchTopicList();
+                    this.routerLoading=false
                     console.log(res)
                     
                 })
                 .catch(err => {
+                    this.routerLoading=false
                     console.log(err)
                 })
         },
@@ -272,7 +277,16 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        }
+        },
+        tapToArticle(param) {
+            this.$router.push({
+                path: '/article-all',
+                query: {
+                    artTitle: param
+                }
+            })
+            window.sessionStorage.setItem("token", this.token);
+        },
     }
 
 }

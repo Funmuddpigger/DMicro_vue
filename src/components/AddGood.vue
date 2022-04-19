@@ -18,7 +18,7 @@
                 <el-input style="margin-top:5%;" placeholder="请输入备注" v-model="input2">
                     <template slot="prepend">备注: </template>
                 </el-input>
-                <el-button style="margin-top:5%;" @click="post()">post</el-button>
+                <el-button style="margin-top:5%;" @click="post()" v-loading.fullscreen.lock ="routerLoading">post</el-button>
             </div>
         </div>
     </div>
@@ -29,6 +29,7 @@
 export default {
     data() {
         return {
+            routerLoading:false,
             imageUrl: '',
             trueUrl: '',
             urlGood: this.GLOBAL.urlGood,
@@ -40,6 +41,7 @@ export default {
     },
     methods: {
         post() {
+            this.routerLoading = true
             var json = {
                 "goodName": this.input,
                 "goodPrice": this.input1,
@@ -57,11 +59,11 @@ export default {
                 })
                 .then(res => {
                     window.sessionStorage.setItem("token", this.token);
-                    this.$router.push("/good");
                     this.$message('发布成功')
-
+                    this.$router.push("/good");
                 })
                 .catch(err => {
+                    this.routerLoading = false
                     console.log(err)
                 })
         },
